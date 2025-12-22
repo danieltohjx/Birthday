@@ -3,7 +3,7 @@ const CONFIG = {
   birth: { dd: "24", mm: "12", yyyy: "1999" },
 
   // Optional: your relationship start date for "days together"
-  sinceISO: "2024-01-01",
+  sinceISO: "2021-02-21",
 
   // Homepage collage (5)
   homeCollage: [
