@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="pink">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our First Date - For You</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="brand">For You</h1>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="moments.html" class="nav-link">Moments</a>
+                <a href="first-date.html" class="nav-link active">First Date</a>
+                <a href="travels.html" class="nav-link">Travels</a>
+                <a href="letter.html" class="nav-link">Letter</a>
+            </nav>
+            <div class="theme-switcher">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select">
+                    <option value="pink">Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="white">White</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1 class="page-title">Our First Date</h1>
+            <p class="page-subtitle">The beginning of everything beautiful</p>
+        </section>
+
+        <section class="story-content">
+            <div class="story-card">
+                <div class="story-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Date</span>
+                        <span class="meta-value" id="first-date-date">YYYY-MM-DD</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Location</span>
+                        <span class="meta-value" id="first-date-location">Location Name</span>
+                    </div>
+                </div>
+
+                <div class="story-section">
+                    <h2 class="story-heading">What Happened</h2>
+                    <p class="story-text" id="what-happened">
+                        We met at that little café you suggested. The one with the big windows and the plants everywhere. 
+                        I remember being nervous, wondering if I'd said the right things in our messages. But when you walked in, 
+                        everything felt natural. We talked for hours, and I didn't want it to end.
+                    </p>
+                </div>
+
+                <div class="story-section">
+                    <h2 class="story-heading">What Stood Out</h2>
+                    <p class="story-text" id="what-stood-out">
+                        Your laugh. The way you got excited talking about the things you love. How comfortable the silence felt 
+                        between us, even on a first date. I remember thinking, "I could do this forever." And here we are.
+                    </p>
+                </div>
+
+                <div class="story-section">
+                    <h2 class="story-heading">How It Felt</h2>
+                    <p class="story-text" id="how-it-felt">
+                        Honestly? It felt like coming home. Like something just clicked into place. I walked away knowing that 
+                        this wasn't just another date—this was the start of something real. Something worth holding onto.
+                    </p>
+                </div>
+            </div>
+
+            <div class="story-photos" id="first-date-photos">
+                <!-- Photos will be loaded dynamically by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

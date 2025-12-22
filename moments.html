@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="pink">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Moments - For You</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="brand">For You</h1>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="moments.html" class="nav-link active">Moments</a>
+                <a href="first-date.html" class="nav-link">First Date</a>
+                <a href="travels.html" class="nav-link">Travels</a>
+                <a href="letter.html" class="nav-link">Letter</a>
+            </nav>
+            <div class="theme-switcher">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select">
+                    <option value="pink">Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="white">White</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h1 class="page-title">Favorite Moments</h1>
+            <p class="page-subtitle">A collection of memories that make my heart smile</p>
+        </section>
+
+        <section class="moments-grid" id="moments-grid">
+            <!-- Photos will be loaded dynamically by JavaScript -->
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

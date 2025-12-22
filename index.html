@@ -1,112 +1,71 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="pink">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>For You</title>
-  <link rel="stylesheet" href="styles.css" />
-  <meta name="theme-color" content="#ffffff" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Love</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <span class="mark" aria-hidden="true">✿</span>
-      <span class="title">A Small Website, For You</span>
-    </div>
-
-    <div class="controls">
-      <label class="select-label" for="themeSelect">Theme</label>
-      <select id="themeSelect" class="select">
-        <option value="pink" selected>Übermensch Pink</option>
-        <option value="blue">Übermensch Blue</option>
-        <option value="red">Übermensch Red</option>
-        <option value="white">Übermensch White</option>
-      </select>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-bg" aria-hidden="true"></div>
-
-      <div class="hero-card">
-        <p class="eyebrow">Daisies and Calla Lilies</p>
-        <h1>Happy Anniversary, <span id="name">[Her Name]</span></h1>
-        <p class="sub">
-          I made this so you can revisit us anytime. Simple, private, and ours.
-        </p>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="stat-label">Days together</div>
-            <div class="stat-value" id="daysTogether">0</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label">Since</div>
-            <div class="stat-value" id="sinceDate">YYYY-MM-DD</div>
-          </div>
+    <header class="header">
+        <div class="header-content">
+            <h1 class="brand">For You</h1>
+            <nav class="nav">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="moments.html" class="nav-link">Moments</a>
+                <a href="first-date.html" class="nav-link">First Date</a>
+                <a href="travels.html" class="nav-link">Travels</a>
+                <a href="letter.html" class="nav-link">Letter</a>
+            </nav>
+            <div class="theme-switcher">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select">
+                    <option value="pink">Pink</option>
+                    <option value="blue">Blue</option>
+                    <option value="red">Red</option>
+                    <option value="white">White</option>
+                </select>
+            </div>
         </div>
+    </header>
 
-        <div class="cta-row">
-          <a class="btn primary" href="#moments">Open our moments</a>
-          <button class="btn ghost" id="toggleMusic" type="button">Play music</button>
-        </div>
+    <main>
+        <section class="hero">
+            <div class="daisy-background"></div>
+            <div class="hero-content">
+                <div class="hero-card">
+                    <h1 class="hero-title">Happy Birthday, My Love</h1>
+                    <p class="hero-subtitle">Every moment with you is a treasure I hold close to my heart</p>
+                    <div class="cta-buttons">
+                        <a href="moments.html" class="btn btn-primary">Favorite Moments</a>
+                        <a href="letter.html" class="btn btn-secondary">Read My Letter</a>
+                    </div>
+                </div>
+                <div class="calla-visual">
+                    <img src="assets/svg/calla.svg" alt="Calla Lily" class="calla-svg">
+                </div>
+            </div>
+        </section>
 
-        <p class="hint">
-          Tip: replace the placeholders in <code>script.js</code> with your real date, her name, and your photos.
-        </p>
-      </div>
+        <section class="relationship-counter">
+            <div class="counter-card">
+                <div class="counter-item">
+                    <div class="counter-label">Days Together</div>
+                    <div class="counter-value" id="days-together">0</div>
+                </div>
+                <div class="counter-divider"></div>
+                <div class="counter-item">
+                    <div class="counter-label">Since</div>
+                    <div class="counter-value" id="since-date">YYYY-MM-DD</div>
+                </div>
+            </div>
+        </section>
 
-      <div class="calla" aria-hidden="true"></div>
-    </section>
+        <section class="photo-collage" id="photo-collage">
+            <!-- Photos will be added dynamically by JavaScript -->
+        </section>
+    </main>
 
-    <section class="section" id="letter">
-      <div class="section-head">
-        <h2>A short note</h2>
-        <p class="muted">Write it like you talk to her. Keep it specific.</p>
-      </div>
-
-      <div class="paper">
-        <p>
-          [Write your letter here. Add 3 concrete details: a place, a moment, and a promise.]
-        </p>
-        <p class="signature">— [Your Name]</p>
-      </div>
-    </section>
-
-    <section class="section" id="moments">
-      <div class="section-head">
-        <h2>Favorite moments</h2>
-        <p class="muted">A small gallery. Keep it curated, not a dump.</p>
-      </div>
-
-      <div class="grid" id="gallery">
-        <!-- Filled by script.js -->
-      </div>
-    </section>
-
-    <section class="section" id="timeline">
-      <div class="section-head">
-        <h2>Timeline</h2>
-        <p class="muted">A few milestones. One sentence each.</p>
-      </div>
-
-      <ol class="timeline" id="timelineList">
-        <!-- Filled by script.js -->
-      </ol>
-    </section>
-
-    <footer class="footer">
-      <p class="muted">Made with intention. Hosted on GitHub Pages.</p>
-    </footer>
-  </main>
-
-  <audio id="bgm" preload="none" loop>
-    <!-- Put your file in /assets and update the src -->
-    <source src="assets/music.mp3" type="audio/mpeg" />
-  </audio>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
