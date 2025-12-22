@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 320">
+  <defs>
+    <linearGradient id="petal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.96"/>
+      <stop offset="0.6" stop-color="#ffffff" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#e9eef3" stop-opacity="0.55"/>
+    </linearGradient>
+
+    <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#000000" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
+
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+  </defs>
+
+  <!-- subtle shadow -->
+  <path d="M70 285 C120 310, 170 300, 190 270 C170 295, 120 300, 70 285 Z"
+        fill="url(#shadow)" filter="url(#blur)"/>
+
+  <!-- petal body -->
+  <path d="M60 285
+           C35 235, 40 155, 85 95
+           C120 50, 175 45, 190 95
+           C205 145, 170 210, 120 245
+           C100 260, 82 275, 60 285 Z"
+        fill="url(#petal)"/>
+
+  <!-- inner fold -->
+  <path d="M92 112
+           C120 86, 160 90, 168 124
+           C176 160, 144 212, 112 238
+           C135 200, 150 165, 142 130
+           C136 102, 110 100, 92 112 Z"
+        fill="#000000" opacity="0.07"/>
+
+  <!-- spadix -->
+  <path d="M122 110
+           C138 116, 146 132, 142 156
+           C136 192, 120 224, 102 250
+           C115 208, 122 172, 118 140
+           C116 124, 116 114, 122 110 Z"
+        fill="#d59500" opacity="0.9"/>
+
+  <!-- stem hint -->
+  <path d="M70 290 C78 250, 88 220, 104 190"
+        stroke="#2e6b4f" stroke-opacity="0.45" stroke-width="8" stroke-linecap="round"/>
+</svg>

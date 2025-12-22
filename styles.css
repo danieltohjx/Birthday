@@ -3,11 +3,56 @@
   --surface: rgba(255,255,255,0.78);
   --text: #121212;
   --muted: rgba(18,18,18,0.68);
+  --brand-blue: #226286;  /* Blumine */
+  --brand-gold: #d59500;  /* Buddha Gold */
 
-  --accent: #ff5aa5;    /* pink default */
-  --accent2: #2d5bff;   /* blue pop */
-  --accent3: #ff2a2a;   /* red punch */
+  --daisy-url: url("assets/svg/daisy.svg");
+  --calla-url: url("assets/svg/calla.svg");
+
+  /* default: Übermensch Pink */
+  --accent: #ff4fa3;
+  --accent2: var(--brand-blue);
+  --accent3: #ff2a2a;
   --stem: #2e6b4f;
+
+  --shadow: 0 18px 40px rgba(0,0,0,0.12);
+  --radius: 18px;
+
+  --daisy-url: url("assets/svg/daisy.svg");
+  --calla-url: url("assets/svg/calla.svg");
+}
+
+[data-theme="pink"]{
+  --bg: #fff4f8;
+  --surface: rgba(255,255,255,0.80);
+  --accent: #ff4fa3;
+  --accent2: var(--brand-blue);
+  --accent3: var(--brand-gold);
+}
+
+[data-theme="blue"]{
+  --bg: #f3fbff;
+  --surface: rgba(255,255,255,0.80);
+  --accent: var(--brand-blue);
+  --accent2: #6aa8ff;
+  --accent3: var(--brand-gold);
+}
+
+[data-theme="red"]{
+  --bg: #fff5f5;
+  --surface: rgba(255,255,255,0.80);
+  --accent: #ff2a2a;
+  --accent2: var(--brand-blue);
+  --accent3: var(--brand-gold);
+}
+
+[data-theme="white"]{
+  --bg: #ffffff;
+  --surface: rgba(250,250,250,0.86);
+  --accent: #111111;
+  --accent2: var(--brand-blue);
+  --accent3: var(--brand-gold);
+
 
   --shadow: 0 18px 40px rgba(0,0,0,0.12);
   --radius: 18px;
@@ -112,23 +157,36 @@ main{ max-width: 1050px; margin: 0 auto; padding: 18px; }
   content:"";
   position:absolute;
   inset:-40px;
-  opacity: 0.42;
-  background:
-    radial-gradient(circle at 12px 12px, rgba(255,255,255,0.95) 0 6px, transparent 7px),
-    radial-gradient(circle at 12px 12px, rgba(255,210,0,0.9) 0 2.2px, transparent 2.3px);
-  background-size: 48px 48px;
-  filter: blur(0.2px);
+  opacity: 0.22;
+  background-image: var(--daisy-url);
+  background-repeat: repeat;
+  background-size: 64px 64px;
   transform: rotate(-6deg);
 }
 
-/* Soft color wash */
 .hero-bg::after{
   content:"";
   position:absolute;
   inset:0;
   background:
-    radial-gradient(900px 520px at 30% 40%, rgba(255,90,165,0.18), transparent 55%),
-    radial-gradient(900px 520px at 75% 30%, rgba(45,91,255,0.14), transparent 55%);
+    radial-gradient(900px 520px at 25% 35%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 58%),
+    radial-gradient(900px 520px at 75% 25%, color-mix(in srgb, var(--accent2) 18%, transparent), transparent 58%),
+    radial-gradient(1100px 700px at 50% 90%, rgba(255,255,255,0.55), transparent 55%);
+}
+
+.calla{
+  position: relative;
+  z-index: 1;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.50), rgba(255,255,255,0.25)),
+    var(--calla-url);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: var(--shadow);
+  overflow:hidden;
 }
 
 .hero-card{
