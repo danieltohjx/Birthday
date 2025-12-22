@@ -16,25 +16,30 @@ const CONFIG = {
 
   // Moments (10)
   moments: [
-    { src: "assets/photos/moment01.jpg", stamp: "Moment 01", line: "The way you looked at me here." },
-    { src: "assets/photos/moment02.jpg", stamp: "Moment 02", line: "Quiet joy, no effort, just us." },
-    { src: "assets/photos/moment03.jpg", stamp: "Moment 03", line: "I still replay this in my head." },
-    { src: "assets/photos/moment04.jpg", stamp: "Moment 04", line: "A day I never want to forget." },
-    { src: "assets/photos/moment05.jpg", stamp: "Moment 05", line: "You made everything feel lighter." },
-    { src: "assets/photos/moment06.jpg", stamp: "Moment 06", line: "My comfort place is beside you." },
-    { src: "assets/photos/moment07.jpg", stamp: "Moment 07", line: "This was the kind of happy I want." },
-    { src: "assets/photos/moment08.jpg", stamp: "Moment 08", line: "You, being you, is enough." },
-    { src: "assets/photos/moment09.jpg", stamp: "Moment 09", line: "I’m grateful we have this." },
-    { src: "assets/photos/moment10.jpg", stamp: "Moment 10", line: "More of this, please." }
+    { src: "assets/photos/moment01.jpg", stamp: "Moment 01", line: "The day when you came down to my sergeant graduation." },
+    { src: "assets/photos/moment02.jpg", stamp: "Moment 02", line: "Our Van Gogh Museum date." },
+    { src: "assets/photos/moment03.jpg", stamp: "Moment 03", line: "My birthday celebration at the mexican place at dempsey." },
+    { src: "assets/photos/moment04.jpg", stamp: "Moment 04", line: "Our first GBTB with your family." },
+    { src: "assets/photos/moment05.jpg", stamp: "Moment 05", line: "meow, i look good here." },
+    { src: "assets/photos/moment06.jpg", stamp: "Moment 06", line: "Animal zoo in bkk" },
+    { src: "assets/photos/moment07.jpg", stamp: "Moment 07", line: "My first Spago experience with you." },
+    { src: "assets/photos/moment08.jpg", stamp: "Moment 08", line: "Our first pottery class." },
+    { src: "assets/photos/moment09.jpg", stamp: "Moment 09", line: "photobooth of me in frog costume."},
+    { src: "assets/photos/moment10.jpg", stamp: "Moment 10", line: "Our first hair salon experience together. "}
   ],
 
   // Travels (5, each photo = one trip)
   travels: [
-    { src: "assets/photos/trip01.jpg", title: "Trip 01", sub: "A place that felt like a movie." },
-    { src: "assets/photos/trip02.jpg", title: "Trip 02", sub: "We laughed until it hurt." },
-    { src: "assets/photos/trip03.jpg", title: "Trip 03", sub: "Soft mornings, slow days." },
-    { src: "assets/photos/trip04.jpg", title: "Trip 04", sub: "We found our rhythm." },
-    { src: "assets/photos/trip05.jpg", title: "Trip 05", sub: "Same view, different life now." }
+    { src: "assets/photos/trip01.jpg", title: "Trip 01", sub: "Switzerland."},
+    { src: "assets/photos/trip02.jpg", title: "Trip 02", sub: "Seoul."},
+    { src: "assets/photos/trip03.jpg", title: "Trip 03", sub: "Bangkok."},
+    { src: "assets/photos/trip04.jpg", title: "Trip 04", sub: "ITaly."},
+    { src: "assets/photos/trip05.jpg", title: "Trip 05", sub: "Bangkok."}
+  ],
+
+  //first date
+  firstDate: [
+    {src: "assets/photos/firstdate1.jpg", title: "First Date 01", sub: "A place"}
   ]
 };
 
