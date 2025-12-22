@@ -1,85 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="pink">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our First Date - For You</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our First Date</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1 class="brand">For You</h1>
-            <nav class="nav">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="moments.html" class="nav-link">Moments</a>
-                <a href="first-date.html" class="nav-link active">First Date</a>
-                <a href="travels.html" class="nav-link">Travels</a>
-                <a href="letter.html" class="nav-link">Letter</a>
-            </nav>
-            <div class="theme-switcher">
-                <label for="theme-select">Theme:</label>
-                <select id="theme-select">
-                    <option value="pink">Pink</option>
-                    <option value="blue">Blue</option>
-                    <option value="red">Red</option>
-                    <option value="white">White</option>
-                </select>
-            </div>
+  <div class="daisy-drift" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">✿</span>
+      <span class="title">For You</span>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="moments.html">Favorite Moments</a>
+      <a href="first-date.html">First Date</a>
+      <a href="travels.html">Our Travels</a>
+      <a href="letter.html">Letter</a>
+    </nav>
+
+    <div class="controls">
+      <button class="btn" id="musicBtn" type="button">Play music</button>
+      <label class="select-label" for="themeSelect">Theme</label>
+      <select id="themeSelect" class="select">
+        <option value="pink" selected>Übermensch Pink</option>
+        <option value="blue">Übermensch Blue</option>
+        <option value="red">Übermensch Red</option>
+        <option value="white">Übermensch White</option>
+      </select>
+    </div>
+  </header>
+
+  <audio id="bgm" preload="none" loop>
+    <source src="assets/music/drama.mp3" type="audio/mpeg" />
+  </audio>
+
+  <main>
+    <section class="hero">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="card">
+          <p class="eyebrow">Our first date</p>
+          <h1>The day it started feeling real</h1>
+          <p class="sub">
+            Replace this with the real scene: where you met, what you ate, what she wore, the moment you noticed, “this is different.”
+          </p>
+
+          <div class="paper" style="margin-top:14px;">
+            <p><strong>Where:</strong> [Place]</p>
+            <p><strong>What happened:</strong> [2–3 lines]</p>
+            <p><strong>What I noticed:</strong> [1–2 lines]</p>
+            <p><strong>What I felt:</strong> [1–2 lines]</p>
+            <p class="signature">— [Your Name]</p>
+          </div>
+
+          <div class="row" style="margin-top:14px;">
+            <a class="btn primary" href="travels.html">Next: our travels</a>
+            <a class="btn" href="moments.html">Back</a>
+          </div>
         </div>
-    </header>
 
-    <main>
-        <section class="page-header">
-            <h1 class="page-title">Our First Date</h1>
-            <p class="page-subtitle">The beginning of everything beautiful</p>
-        </section>
+        <div class="calla-hero" aria-hidden="true"></div>
+      </div>
+    </section>
 
-        <section class="story-content">
-            <div class="story-card">
-                <div class="story-meta">
-                    <div class="meta-item">
-                        <span class="meta-label">Date</span>
-                        <span class="meta-value" id="first-date-date">YYYY-MM-DD</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">Location</span>
-                        <span class="meta-value" id="first-date-location">Location Name</span>
-                    </div>
-                </div>
+    <footer class="footer">Some beginnings feel quiet. This one wasn’t.</footer>
+  </main>
 
-                <div class="story-section">
-                    <h2 class="story-heading">What Happened</h2>
-                    <p class="story-text" id="what-happened">
-                        We met at that little café you suggested. The one with the big windows and the plants everywhere. 
-                        I remember being nervous, wondering if I'd said the right things in our messages. But when you walked in, 
-                        everything felt natural. We talked for hours, and I didn't want it to end.
-                    </p>
-                </div>
-
-                <div class="story-section">
-                    <h2 class="story-heading">What Stood Out</h2>
-                    <p class="story-text" id="what-stood-out">
-                        Your laugh. The way you got excited talking about the things you love. How comfortable the silence felt 
-                        between us, even on a first date. I remember thinking, "I could do this forever." And here we are.
-                    </p>
-                </div>
-
-                <div class="story-section">
-                    <h2 class="story-heading">How It Felt</h2>
-                    <p class="story-text" id="how-it-felt">
-                        Honestly? It felt like coming home. Like something just clicked into place. I walked away knowing that 
-                        this wasn't just another date—this was the start of something real. Something worth holding onto.
-                    </p>
-                </div>
-            </div>
-
-            <div class="story-photos" id="first-date-photos">
-                <!-- Photos will be loaded dynamically by JavaScript -->
-            </div>
-        </section>
-    </main>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

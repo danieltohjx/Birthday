@@ -1,353 +1,287 @@
-// ========================================
-// CONFIGURATION - Edit these values
-// ========================================
-
 const CONFIG = {
-    // Relationship details
-    partnerName: "My Love",
-    yourName: "Your Love",
-    relationshipStartDate: "2020-01-01", // Format: YYYY-MM-DD
-    
-    // First Date details
-    firstDate: {
-        date: "2020-01-01",
-        location: "Cozy Café on Main Street",
-        whatHappened: "We met at that little café you suggested. The one with the big windows and the plants everywhere. I remember being nervous, wondering if I'd said the right things in our messages. But when you walked in, everything felt natural. We talked for hours, and I didn't want it to end.",
-        whatStoodOut: "Your laugh. The way you got excited talking about the things you love. How comfortable the silence felt between us, even on a first date. I remember thinking, 'I could do this forever.' And here we are.",
-        howItFelt: "Honestly? It felt like coming home. Like something just clicked into place. I walked away knowing that this wasn't just another date—this was the start of something real. Something worth holding onto.",
-        photos: [
-            "assets/photos/firstdate1.jpg",
-            "assets/photos/firstdate2.jpg"
-        ]
-    },
-    
-    // Favorite moments photos (for moments.html and homepage collage)
-    moments: [
-        {
-            image: "assets/photos/moment1.jpg",
-            caption: "That sunset we watched together, the world felt like it stopped just for us"
-        },
-        {
-            image: "assets/photos/moment2.jpg",
-            caption: "Your smile in this photo still makes my heart skip a beat"
-        },
-        {
-            image: "assets/photos/moment3.jpg",
-            caption: "The day everything felt perfect, just being with you"
-        },
-        {
-            image: "assets/photos/moment4.jpg",
-            caption: "Adventures are always better when you're by my side"
-        },
-        {
-            image: "assets/photos/moment5.jpg",
-            caption: "This moment reminded me why I fell for you"
-        },
-        {
-            image: "assets/photos/moment6.jpg",
-            caption: "Just another day loving you more than yesterday"
-        }
-    ],
-    
-    // Travels data
-    travels: [
-        {
-            location: "Paris, France",
-            dates: "June 2021",
-            highlights: [
-                "Watching the Eiffel Tower sparkle at midnight",
-                "Getting lost in the streets of Montmartre and finding that perfect little bistro",
-                "The look on your face when we saw the view from Sacré-Cœur"
-            ],
-            photos: [
-                "assets/photos/paris1.jpg",
-                "assets/photos/paris2.jpg",
-                "assets/photos/paris3.jpg"
-            ]
-        },
-        {
-            location: "Tokyo, Japan",
-            dates: "March 2022",
-            highlights: [
-                "Cherry blossoms in full bloom at Ueno Park",
-                "Our midnight ramen adventure in Shibuya",
-                "That quiet moment at the temple where everything felt so peaceful"
-            ],
-            photos: [
-                "assets/photos/tokyo1.jpg",
-                "assets/photos/tokyo2.jpg"
-            ]
-        },
-        {
-            location: "Bali, Indonesia",
-            dates: "December 2022",
-            highlights: [
-                "Sunrise at Mount Batur - the most beautiful view with the most beautiful person",
-                "Our cooking class where we laughed more than we cooked",
-                "Beach walks at sunset, just us and the waves"
-            ],
-            photos: [
-                "assets/photos/bali1.jpg",
-                "assets/photos/bali2.jpg",
-                "assets/photos/bali3.jpg"
-            ]
-        }
-    ]
+  // Gate: birthday
+  birth: { dd: "24", mm: "12", yyyy: "1999" },
+
+  // Optional: your relationship start date for "days together"
+  sinceISO: "2024-01-01",
+
+  // Homepage collage (5)
+  homeCollage: [
+    { src: "assets/photos/home1.jpg", caption: "Happy Birthday" },
+    { src: "assets/photos/home2.jpg", caption: "My favorite person" },
+    { src: "assets/photos/home3.jpg", caption: "Always you" },
+    { src: "assets/photos/home4.jpg", caption: "Soft moments" },
+    { src: "assets/photos/home5.jpg", caption: "Forever vibe" }
+  ],
+
+  // Moments (10)
+  moments: [
+    { src: "assets/photos/moment01.jpg", stamp: "Moment 01", line: "The way you looked at me here." },
+    { src: "assets/photos/moment02.jpg", stamp: "Moment 02", line: "Quiet joy, no effort, just us." },
+    { src: "assets/photos/moment03.jpg", stamp: "Moment 03", line: "I still replay this in my head." },
+    { src: "assets/photos/moment04.jpg", stamp: "Moment 04", line: "A day I never want to forget." },
+    { src: "assets/photos/moment05.jpg", stamp: "Moment 05", line: "You made everything feel lighter." },
+    { src: "assets/photos/moment06.jpg", stamp: "Moment 06", line: "My comfort place is beside you." },
+    { src: "assets/photos/moment07.jpg", stamp: "Moment 07", line: "This was the kind of happy I want." },
+    { src: "assets/photos/moment08.jpg", stamp: "Moment 08", line: "You, being you, is enough." },
+    { src: "assets/photos/moment09.jpg", stamp: "Moment 09", line: "I’m grateful we have this." },
+    { src: "assets/photos/moment10.jpg", stamp: "Moment 10", line: "More of this, please." }
+  ],
+
+  // Travels (5, each photo = one trip)
+  travels: [
+    { src: "assets/photos/trip01.jpg", title: "Trip 01", sub: "A place that felt like a movie." },
+    { src: "assets/photos/trip02.jpg", title: "Trip 02", sub: "We laughed until it hurt." },
+    { src: "assets/photos/trip03.jpg", title: "Trip 03", sub: "Soft mornings, slow days." },
+    { src: "assets/photos/trip04.jpg", title: "Trip 04", sub: "We found our rhythm." },
+    { src: "assets/photos/trip05.jpg", title: "Trip 05", sub: "Same view, different life now." }
+  ]
 };
 
-// ========================================
-// UTILITY FUNCTIONS
-// ========================================
+function pad2(n){ return String(n).padStart(2, "0"); }
 
-function calculateDaysTogether(startDate) {
-    const start = new Date(startDate);
-    const today = new Date();
-    const diffTime = Math.abs(today - start);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+function daysBetween(start, end){
+  const ms = 24 * 60 * 60 * 1000;
+  const a = new Date(start);
+  const b = new Date(end);
+  a.setHours(0,0,0,0);
+  b.setHours(0,0,0,0);
+  return Math.floor((b - a) / ms);
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+function setTheme(theme){
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
 }
 
-// ========================================
-// THEME MANAGEMENT
-// ========================================
+function initTheme(){
+  const select = document.getElementById("themeSelect");
+  if (!select) return;
 
-function initTheme() {
-    const themeSelect = document.getElementById('theme-select');
-    if (!themeSelect) return;
-    
-    // Load saved theme or use default
-    const savedTheme = localStorage.getItem('selectedTheme') || 'pink';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    themeSelect.value = savedTheme;
-    
-    // Listen for theme changes
-    themeSelect.addEventListener('change', (e) => {
-        const theme = e.target.value;
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('selectedTheme', theme);
+  const saved = localStorage.getItem("theme");
+  if (saved){
+    select.value = saved;
+    setTheme(saved);
+  } else {
+    setTheme(select.value || "pink");
+  }
+
+  select.addEventListener("change", (e) => setTheme(e.target.value));
+}
+
+function initMusic(){
+  const audio = document.getElementById("bgm");
+  const btn = document.getElementById("musicBtn");
+  if (!audio || !btn) return;
+
+  const saved = localStorage.getItem("music");
+  let playing = saved === "on";
+
+  const applyBtn = () => btn.textContent = playing ? "Pause music" : "Play music";
+  applyBtn();
+
+  const attemptStart = async () => {
+    try{
+      await audio.play();
+      playing = true;
+      localStorage.setItem("music", "on");
+      applyBtn();
+    } catch {
+      playing = false;
+      localStorage.setItem("music", "off");
+      applyBtn();
+    }
+  };
+
+  if (playing) attemptStart();
+
+  btn.addEventListener("click", async () => {
+    try{
+      if (!playing){
+        await audio.play();
+        playing = true;
+        localStorage.setItem("music", "on");
+      } else {
+        audio.pause();
+        playing = false;
+        localStorage.setItem("music", "off");
+      }
+      applyBtn();
+    } catch {
+      playing = false;
+      localStorage.setItem("music", "off");
+      applyBtn();
+      alert("Playback blocked by browser. Tap again after interacting with the page.");
+    }
+  });
+}
+
+function initCounters(){
+  const sinceEl = document.getElementById("sinceDate");
+  const daysEl = document.getElementById("daysTogether");
+  if (sinceEl && daysEl){
+    sinceEl.textContent = CONFIG.sinceISO;
+    daysEl.textContent = String(daysBetween(CONFIG.sinceISO, new Date()));
+  }
+}
+
+function initGate(){
+  const gate = document.getElementById("gate");
+  if (!gate) return;
+
+  const unlocked = localStorage.getItem("unlocked") === "yes";
+  const lockView = document.getElementById("lockView");
+  const revealView = document.getElementById("revealView");
+
+  const bloom = document.getElementById("bloom");
+
+  const showReveal = () => {
+    if (lockView) lockView.style.display = "none";
+    if (revealView) revealView.style.display = "block";
+    requestAnimationFrame(() => {
+      if (bloom) bloom.classList.add("on");
     });
-}
+    spawnHomeCollage();
+  };
 
-// ========================================
-// HOMEPAGE FUNCTIONALITY
-// ========================================
+  if (unlocked){
+    showReveal();
+    return;
+  }
 
-function initHomepage() {
-    // Update relationship counter
-    const daysTogether = document.getElementById('days-together');
-    const sinceDate = document.getElementById('since-date');
-    
-    if (daysTogether && sinceDate) {
-        const days = calculateDaysTogether(CONFIG.relationshipStartDate);
-        daysTogether.textContent = days.toLocaleString();
-        sinceDate.textContent = CONFIG.relationshipStartDate;
+  const dd = document.getElementById("dd");
+  const mm = document.getElementById("mm");
+  const yyyy = document.getElementById("yyyy");
+  const unlockBtn = document.getElementById("unlockBtn");
+
+  const sanitize = (el, maxLen) => {
+    el.value = el.value.replace(/[^\d]/g, "").slice(0, maxLen);
+  };
+
+  const check = () => {
+    const ok = (dd.value === CONFIG.birth.dd) && (mm.value === CONFIG.birth.mm) && (yyyy.value === CONFIG.birth.yyyy);
+    if (ok){
+      localStorage.setItem("unlocked", "yes");
+      showReveal();
+      return;
     }
-    
-    // Create photo collage animation
-    const collage = document.getElementById('photo-collage');
-    if (collage && CONFIG.moments.length > 0) {
-        // Use first 6 photos for collage
-        const photosToShow = CONFIG.moments.slice(0, 6);
-        
-        photosToShow.forEach((moment, index) => {
-            setTimeout(() => {
-                createPolaroid(collage, moment.image, index);
-            }, index * 300); // Stagger the animations
-        });
-    }
-}
-
-function createPolaroid(container, imageSrc, index) {
-    const polaroid = document.createElement('div');
-    polaroid.className = 'polaroid';
-    
-    // Random position within container
-    const maxWidth = container.offsetWidth - 270;
-    const maxHeight = 400;
-    const left = getRandomInt(0, Math.max(0, maxWidth));
-    const top = getRandomInt(0, maxHeight);
-    
-    // Random rotation
-    const rotation = getRandomInt(-15, 15);
-    
-    polaroid.style.left = `${left}px`;
-    polaroid.style.top = `${top}px`;
-    polaroid.style.setProperty('--rotation', `${rotation}deg`);
-    polaroid.style.animationDelay = '0s';
-    
-    const img = document.createElement('img');
-    img.src = imageSrc;
-    img.alt = 'Memory';
-    img.onerror = function() {
-        // If image doesn't load, use a placeholder
-        this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="250"%3E%3Crect fill="%23ddd" width="250" height="250"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="14" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EPhoto ' + (index + 1) + '%3C/text%3E%3C/svg%3E';
-    };
-    
-    polaroid.appendChild(img);
-    container.appendChild(polaroid);
-}
-
-// ========================================
-// MOMENTS PAGE
-// ========================================
-
-function initMomentsPage() {
-    const grid = document.getElementById('moments-grid');
-    if (!grid) return;
-    
-    CONFIG.moments.forEach((moment) => {
-        const card = document.createElement('div');
-        card.className = 'moment-card';
-        
-        const img = document.createElement('img');
-        img.src = moment.image;
-        img.alt = moment.caption;
-        img.onerror = function() {
-            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23ddd" width="400" height="300"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="16" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EMemory%3C/text%3E%3C/svg%3E';
-        };
-        
-        const caption = document.createElement('div');
-        caption.className = 'moment-caption';
-        caption.textContent = moment.caption;
-        
-        card.appendChild(img);
-        card.appendChild(caption);
-        grid.appendChild(card);
+    // shake inputs
+    [dd, mm, yyyy].forEach((x) => {
+      x.classList.remove("shake");
+      void x.offsetWidth;
+      x.classList.add("shake");
     });
+  };
+
+  dd.addEventListener("input", () => { sanitize(dd, 2); if (dd.value.length === 2) mm.focus(); });
+  mm.addEventListener("input", () => { sanitize(mm, 2); if (mm.value.length === 2) yyyy.focus(); });
+  yyyy.addEventListener("input", () => sanitize(yyyy, 4));
+
+  [dd, mm, yyyy].forEach((x) => x.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") check();
+  }));
+
+  unlockBtn?.addEventListener("click", check);
 }
 
-// ========================================
-// FIRST DATE PAGE
-// ========================================
+function rand(min, max){ return Math.random() * (max - min) + min; }
 
-function initFirstDatePage() {
-    // Update date metadata
-    const dateEl = document.getElementById('first-date-date');
-    const locationEl = document.getElementById('first-date-location');
-    
-    if (dateEl) dateEl.textContent = CONFIG.firstDate.date;
-    if (locationEl) locationEl.textContent = CONFIG.firstDate.location;
-    
-    // Update story sections
-    const whatHappened = document.getElementById('what-happened');
-    const whatStoodOut = document.getElementById('what-stood-out');
-    const howItFelt = document.getElementById('how-it-felt');
-    
-    if (whatHappened) whatHappened.textContent = CONFIG.firstDate.whatHappened;
-    if (whatStoodOut) whatStoodOut.textContent = CONFIG.firstDate.whatStoodOut;
-    if (howItFelt) howItFelt.textContent = CONFIG.firstDate.howItFelt;
-    
-    // Add photos if they exist
-    const photosContainer = document.getElementById('first-date-photos');
-    if (photosContainer && CONFIG.firstDate.photos.length > 0) {
-        CONFIG.firstDate.photos.forEach((photoSrc) => {
-            const img = document.createElement('img');
-            img.src = photoSrc;
-            img.alt = 'First Date Memory';
-            img.className = 'story-photo';
-            img.onerror = function() {
-                this.style.display = 'none';
-            };
-            photosContainer.appendChild(img);
-        });
+function spawnHomeCollage(){
+  const collage = document.getElementById("collage");
+  if (!collage) return;
+
+  collage.innerHTML = "";
+
+  const w = collage.clientWidth;
+  const h = collage.clientHeight;
+
+  const safePad = 90;
+  const items = CONFIG.homeCollage.slice(0, 5);
+
+  let i = 0;
+  const timer = setInterval(() => {
+    if (i >= items.length){
+      clearInterval(timer);
+      return;
     }
+    const item = items[i++];
+    const el = document.createElement("div");
+    el.className = "polaroid";
+
+    const x = rand(160, w - 160);
+    const y = rand(150, h - 150);
+    const rot = rand(-10, 10);
+
+    el.style.left = `${x}px`;
+    el.style.top = `${y}px`;
+    el.style.setProperty("--rot", `${rot}deg`);
+
+    el.innerHTML = `
+      <img src="${item.src}" alt="" loading="eager">
+      <div class="cap">${item.caption || ""}</div>
+    `;
+
+    collage.appendChild(el);
+  }, 260);
 }
 
-// ========================================
-// TRAVELS PAGE
-// ========================================
+function renderMoments(){
+  const film = document.getElementById("film");
+  if (!film) return;
 
-function initTravelsPage() {
-    const container = document.getElementById('travels-content');
-    if (!container) return;
-    
-    CONFIG.travels.forEach((travel) => {
-        const section = document.createElement('div');
-        section.className = 'travel-section';
-        
-        // Header
-        const header = document.createElement('div');
-        header.className = 'travel-header';
-        
-        const location = document.createElement('h2');
-        location.className = 'travel-location';
-        location.textContent = travel.location;
-        
-        const dates = document.createElement('div');
-        dates.className = 'travel-dates';
-        dates.textContent = travel.dates;
-        
-        header.appendChild(location);
-        header.appendChild(dates);
-        
-        // Highlights
-        const highlights = document.createElement('ul');
-        highlights.className = 'travel-highlights';
-        
-        travel.highlights.forEach((highlight) => {
-            const li = document.createElement('li');
-            li.textContent = highlight;
-            highlights.appendChild(li);
-        });
-        
-        // Photos
-        const photosGrid = document.createElement('div');
-        photosGrid.className = 'travel-photos';
-        
-        travel.photos.forEach((photoSrc) => {
-            const img = document.createElement('img');
-            img.src = photoSrc;
-            img.alt = `${travel.location} memory`;
-            img.className = 'travel-photo';
-            img.onerror = function() {
-                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="12" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EPhoto%3C/text%3E%3C/svg%3E';
-            };
-            photosGrid.appendChild(img);
-        });
-        
-        section.appendChild(header);
-        section.appendChild(highlights);
-        section.appendChild(photosGrid);
-        container.appendChild(section);
-    });
+  film.innerHTML = "";
+  for (const m of CONFIG.moments){
+    const el = document.createElement("div");
+    el.className = "frame";
+    el.innerHTML = `
+      <img src="${m.src}" alt="" loading="lazy">
+      <div class="meta">
+        <div class="stamp">${m.stamp}</div>
+        <div class="line">${m.line}</div>
+      </div>
+    `;
+    film.appendChild(el);
+  }
 }
 
-// ========================================
-// LETTER PAGE
-// ========================================
+function renderTravels(){
+  const grid = document.getElementById("postcards");
+  if (!grid) return;
 
-function initLetterPage() {
-    const signatureName = document.getElementById('signature-name');
-    if (signatureName) {
-        signatureName.textContent = CONFIG.yourName;
-    }
+  grid.innerHTML = "";
+  for (const t of CONFIG.travels){
+    const el = document.createElement("div");
+    el.className = "postcard";
+    el.style.setProperty("--tilt", `${rand(-2.5, 2.5)}deg`);
+    el.innerHTML = `
+      <img src="${t.src}" alt="" loading="lazy">
+      <div class="pc-body">
+        <p class="pc-title">${t.title}</p>
+        <p class="pc-sub">${t.sub}</p>
+      </div>
+    `;
+    grid.appendChild(el);
+  }
 }
 
-// ========================================
-// INITIALIZATION
-// ========================================
+function initLetter(){
+  const btn = document.getElementById("openLetter");
+  const letter = document.getElementById("letter");
+  if (!btn || !letter) return;
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize theme on all pages
-    initTheme();
-    
-    // Detect current page and initialize accordingly
-    const path = window.location.pathname;
-    const page = path.substring(path.lastIndexOf('/') + 1);
-    
-    if (page === '' || page === 'index.html') {
-        initHomepage();
-    } else if (page === 'moments.html') {
-        initMomentsPage();
-    } else if (page === 'first-date.html') {
-        initFirstDatePage();
-    } else if (page === 'travels.html') {
-        initTravelsPage();
-    } else if (page === 'letter.html') {
-        initLetterPage();
-    }
+  btn.addEventListener("click", () => {
+    letter.classList.add("open");
+    btn.disabled = true;
+    btn.textContent = "Opened";
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initTheme();
+  initMusic();
+  initCounters();
+  initGate();
+  renderMoments();
+  renderTravels();
+  initLetter();
 });

@@ -1,71 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="pink">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, My Love</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For You</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1 class="brand">For You</h1>
-            <nav class="nav">
-                <a href="index.html" class="nav-link active">Home</a>
-                <a href="moments.html" class="nav-link">Moments</a>
-                <a href="first-date.html" class="nav-link">First Date</a>
-                <a href="travels.html" class="nav-link">Travels</a>
-                <a href="letter.html" class="nav-link">Letter</a>
-            </nav>
-            <div class="theme-switcher">
-                <label for="theme-select">Theme:</label>
-                <select id="theme-select">
-                    <option value="pink">Pink</option>
-                    <option value="blue">Blue</option>
-                    <option value="red">Red</option>
-                    <option value="white">White</option>
-                </select>
-            </div>
+  <div class="daisy-drift" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">✿</span>
+      <span class="title">For You</span>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="moments.html">Favorite Moments</a>
+      <a href="first-date.html">First Date</a>
+      <a href="travels.html">Our Travels</a>
+      <a href="letter.html">Letter</a>
+    </nav>
+
+    <div class="controls">
+      <button class="btn" id="musicBtn" type="button">Play music</button>
+      <label class="select-label" for="themeSelect">Theme</label>
+      <select id="themeSelect" class="select">
+        <option value="pink" selected>Übermensch Pink</option>
+        <option value="blue">Übermensch Blue</option>
+        <option value="red">Übermensch Red</option>
+        <option value="white">Übermensch White</option>
+      </select>
+    </div>
+  </header>
+
+  <audio id="bgm" preload="none" loop>
+    <!-- Put your legally obtained audio at assets/music/drama.mp3 -->
+    <source src="assets/music/drama.mp3" type="audio/mpeg" />
+  </audio>
+
+  <div class="bloom" id="bloom" aria-hidden="true"></div>
+
+  <main id="gate">
+    <!-- LOCK VIEW -->
+    <section class="lock" id="lockView">
+      <div class="lock-shell">
+        <div class="lock-top">
+          <p class="eyebrow">A birthday lock</p>
+          <h2 class="lock-title">Today is special.</h2>
+          <p class="lock-sub">Only you can open this. Enter your birthday.</p>
         </div>
-    </header>
 
-    <main>
-        <section class="hero">
-            <div class="daisy-background"></div>
-            <div class="hero-content">
-                <div class="hero-card">
-                    <h1 class="hero-title">Happy Birthday, My Love</h1>
-                    <p class="hero-subtitle">Every moment with you is a treasure I hold close to my heart</p>
-                    <div class="cta-buttons">
-                        <a href="moments.html" class="btn btn-primary">Favorite Moments</a>
-                        <a href="letter.html" class="btn btn-secondary">Read My Letter</a>
-                    </div>
-                </div>
-                <div class="calla-visual">
-                    <img src="assets/svg/calla.svg" alt="Calla Lily" class="calla-svg">
-                </div>
+        <div class="lock-body">
+          <div class="lock-panel">
+            <div class="pill">Hint: DD | MM | YYYY</div>
+
+            <div class="pin" style="margin-top:12px;">
+              <input id="dd" inputmode="numeric" placeholder="DD" aria-label="Day" />
+              <span class="sep">/</span>
+              <input id="mm" inputmode="numeric" placeholder="MM" aria-label="Month" />
+              <span class="sep">/</span>
+              <input id="yyyy" inputmode="numeric" placeholder="YYYY" aria-label="Year" />
             </div>
-        </section>
 
-        <section class="relationship-counter">
-            <div class="counter-card">
-                <div class="counter-item">
-                    <div class="counter-label">Days Together</div>
-                    <div class="counter-value" id="days-together">0</div>
-                </div>
-                <div class="counter-divider"></div>
-                <div class="counter-item">
-                    <div class="counter-label">Since</div>
-                    <div class="counter-value" id="since-date">YYYY-MM-DD</div>
-                </div>
+            <div class="row" style="margin-top:14px;">
+              <button class="btn primary" id="unlockBtn" type="button">Unlock</button>
+              <span class="muted">Soft cinematic romance.</span>
             </div>
-        </section>
+          </div>
 
-        <section class="photo-collage" id="photo-collage">
-            <!-- Photos will be added dynamically by JavaScript -->
-        </section>
-    </main>
+          <div class="calla-hero" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
+    <!-- REVEAL VIEW -->
+    <section class="hero" id="revealView" style="display:none;">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="collage" id="collage" aria-hidden="true"></div>
+
+      <div class="hero-inner">
+        <div class="card">
+          <p class="eyebrow">Daisies and Calla Lilies</p>
+          <h1>Happy Birthday, my love</h1>
+          <p class="sub">
+            Today is about you. I just wanted to give you something that feels like a film you can replay anytime.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Days together</div>
+              <div class="stat-value" id="daysTogether">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Since</div>
+              <div class="stat-value" id="sinceDate">YYYY-MM-DD</div>
+            </div>
+          </div>
+
+          <div class="row">
+            <a class="btn primary" href="moments.html">Continue</a>
+            <a class="btn" href="letter.html">Open letter</a>
+          </div>
+        </div>
+
+        <div class="calla-hero" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>One line, on purpose</h2>
+        <p class="muted">Keep it short. Keep it true.</p>
+      </div>
+      <div class="paper">
+        <p>
+          Replace this with one sentence that only makes sense for her. Specific beats generic.
+        </p>
+        <p class="signature">— [Your Name]</p>
+      </div>
+    </section>
+
+    <footer class="footer">Made for her. Hosted on GitHub Pages.</footer>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

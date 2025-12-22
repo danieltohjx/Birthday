@@ -1,45 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="pink">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorite Moments - For You</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Favorite Moments</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1 class="brand">For You</h1>
-            <nav class="nav">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="moments.html" class="nav-link active">Moments</a>
-                <a href="first-date.html" class="nav-link">First Date</a>
-                <a href="travels.html" class="nav-link">Travels</a>
-                <a href="letter.html" class="nav-link">Letter</a>
-            </nav>
-            <div class="theme-switcher">
-                <label for="theme-select">Theme:</label>
-                <select id="theme-select">
-                    <option value="pink">Pink</option>
-                    <option value="blue">Blue</option>
-                    <option value="red">Red</option>
-                    <option value="white">White</option>
-                </select>
-            </div>
-        </div>
-    </header>
+  <div class="daisy-drift" aria-hidden="true"></div>
 
-    <main>
-        <section class="page-header">
-            <h1 class="page-title">Favorite Moments</h1>
-            <p class="page-subtitle">A collection of memories that make my heart smile</p>
-        </section>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">✿</span>
+      <span class="title">For You</span>
+    </div>
 
-        <section class="moments-grid" id="moments-grid">
-            <!-- Photos will be loaded dynamically by JavaScript -->
-        </section>
-    </main>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="moments.html">Favorite Moments</a>
+      <a href="first-date.html">First Date</a>
+      <a href="travels.html">Our Travels</a>
+      <a href="letter.html">Letter</a>
+    </nav>
 
-    <script src="script.js"></script>
+    <div class="controls">
+      <button class="btn" id="musicBtn" type="button">Play music</button>
+      <label class="select-label" for="themeSelect">Theme</label>
+      <select id="themeSelect" class="select">
+        <option value="pink" selected>Übermensch Pink</option>
+        <option value="blue">Übermensch Blue</option>
+        <option value="red">Übermensch Red</option>
+        <option value="white">Übermensch White</option>
+      </select>
+    </div>
+  </header>
+
+  <audio id="bgm" preload="none" loop>
+    <source src="assets/music/drama.mp3" type="audio/mpeg" />
+  </audio>
+
+  <main>
+    <section class="section">
+      <div class="section-head">
+        <h2>Favorite moments</h2>
+        <p class="muted">Not everything. Only the ones that stayed.</p>
+      </div>
+
+      <div class="film" id="film"></div>
+
+      <div class="row" style="margin-top:14px;">
+        <a class="btn primary" href="first-date.html">Next: our first date</a>
+        <a class="btn" href="index.html">Back</a>
+      </div>
+    </section>
+
+    <footer class="footer">If you’re reading this, you’re my favorite view.</footer>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

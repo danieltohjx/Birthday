@@ -1,45 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="pink">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Travels - For You</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Travels</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1 class="brand">For You</h1>
-            <nav class="nav">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="moments.html" class="nav-link">Moments</a>
-                <a href="first-date.html" class="nav-link">First Date</a>
-                <a href="travels.html" class="nav-link active">Travels</a>
-                <a href="letter.html" class="nav-link">Letter</a>
-            </nav>
-            <div class="theme-switcher">
-                <label for="theme-select">Theme:</label>
-                <select id="theme-select">
-                    <option value="pink">Pink</option>
-                    <option value="blue">Blue</option>
-                    <option value="red">Red</option>
-                    <option value="white">White</option>
-                </select>
-            </div>
-        </div>
-    </header>
+  <div class="daisy-drift" aria-hidden="true"></div>
 
-    <main>
-        <section class="page-header">
-            <h1 class="page-title">Our Travels</h1>
-            <p class="page-subtitle">Adventures we've shared across the world</p>
-        </section>
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">✿</span>
+      <span class="title">For You</span>
+    </div>
 
-        <section class="travels-content" id="travels-content">
-            <!-- Travel sections will be loaded dynamically by JavaScript -->
-        </section>
-    </main>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="moments.html">Favorite Moments</a>
+      <a href="first-date.html">First Date</a>
+      <a href="travels.html">Our Travels</a>
+      <a href="letter.html">Letter</a>
+    </nav>
 
-    <script src="script.js"></script>
+    <div class="controls">
+      <button class="btn" id="musicBtn" type="button">Play music</button>
+      <label class="select-label" for="themeSelect">Theme</label>
+      <select id="themeSelect" class="select">
+        <option value="pink" selected>Übermensch Pink</option>
+        <option value="blue">Übermensch Blue</option>
+        <option value="red">Übermensch Red</option>
+        <option value="white">Übermensch White</option>
+      </select>
+    </div>
+  </header>
+
+  <audio id="bgm" preload="none" loop>
+    <source src="assets/music/drama.mp3" type="audio/mpeg" />
+  </audio>
+
+  <main>
+    <section class="section">
+      <div class="section-head">
+        <h2>Our travels</h2>
+        <p class="muted">Five trips. Five versions of us.</p>
+      </div>
+
+      <div class="postcards" id="postcards"></div>
+
+      <div class="row" style="margin-top:14px;">
+        <a class="btn primary" href="letter.html">Final: the letter</a>
+        <a class="btn" href="first-date.html">Back</a>
+      </div>
+    </section>
+
+    <footer class="footer">Same suitcase. Different memories.</footer>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
