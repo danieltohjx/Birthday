@@ -217,12 +217,81 @@ main{ max-width: var(--max); margin: 0 auto; padding: 18px; }
   overflow: hidden;
   position: relative;
 }
-.calla-hero::after{
+/* Turn calla into a subtle watermark instead of a column */
+.hero::after{
   content:"";
   position:absolute;
-  inset:0;
-  background: radial-gradient(700px 420px at 55% 40%, rgba(255,255,255,0.10), transparent 55%);
+  inset:-40px;
+  pointer-events:none;
+  background-image: var(--calla-url);
+  background-repeat:no-repeat;
+  background-position: 86% 52%;
+  background-size: 520px auto;
+  opacity: 0.10;
+  filter: blur(0.2px);
+  transform: rotate(-2deg);
+  z-index: 1;
 }
+
+/* Right column becomes photo mosaic */
+.hero-mosaic{
+  position: relative;
+  z-index: 2;
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: var(--shadow2);
+  overflow: hidden;
+  padding: 10px;
+  display:grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 170px 170px 170px;
+}
+
+.hero-mosaic .tile{
+  margin: 0;
+  border-radius: 18px;
+  overflow:hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  transform: translateY(14px);
+  opacity: 0;
+  animation: mosaicIn 850ms cubic-bezier(.18,.9,.18,1) forwards;
+}
+
+.hero-mosaic .tile img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+  transform: scale(1.04);
+  filter: contrast(1.05) saturate(1.06);
+  transition: transform 900ms ease;
+}
+
+.hero-mosaic .tile:hover img{
+  transform: scale(1.12);
+}
+
+/* Layout: one tall anchor + 4 supporting tiles */
+.hero-mosaic .a{ grid-column: 1 / 2; grid-row: 1 / 3; animation-delay: 90ms; }
+.hero-mosaic .b{ grid-column: 2 / 3; grid-row: 1 / 2; animation-delay: 180ms; }
+.hero-mosaic .c{ grid-column: 2 / 3; grid-row: 2 / 3; animation-delay: 270ms; }
+.hero-mosaic .d{ grid-column: 1 / 2; grid-row: 3 / 4; animation-delay: 360ms; }
+.hero-mosaic .e{ grid-column: 2 / 3; grid-row: 3 / 4; animation-delay: 450ms; }
+
+@keyframes mosaicIn{
+  0%{ opacity:0; transform: translateY(18px) scale(0.985); }
+  70%{ opacity:1; transform: translateY(-2px) scale(1.01); }
+  100%{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 980px){
+  .hero-mosaic{
+    grid-template-rows: 150px 150px 150px;
+  }
+}
+
 
 .card{
   border-radius: var(--radius);
@@ -564,4 +633,26 @@ h1{
   color: var(--muted);
   position: relative;
   z-index: 2;
+}
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events:none;
+  z-index: 1;
+  opacity: 0.06;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.22) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 4px);
+  mix-blend-mode: overlay;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index: 1;
+  background:
+    radial-gradient(1200px 700px at 50% 30%, transparent 40%, rgba(0,0,0,0.55) 100%);
+  opacity: 0.40;
 }

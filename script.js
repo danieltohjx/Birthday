@@ -147,6 +147,9 @@ function initGate(){
       if (bloom) bloom.classList.add("on");
     });
     spawnHomeCollage();
+    renderHeroMosaic();
+    spawnHomeCollage();
+
   };
 
   if (unlocked){
@@ -213,8 +216,8 @@ function spawnHomeCollage(){
     const el = document.createElement("div");
     el.className = "polaroid";
 
-    const x = rand(160, w - 160);
-    const y = rand(150, h - 150);
+    const x = rand(220, w * 0.62);    // keeps it away from right column
+    const y = rand(170, h - 160);
     const rot = rand(-10, 10);
 
     el.style.left = `${x}px`;
@@ -280,6 +283,20 @@ function initLetter(){
     btn.textContent = "Opened";
   });
 }
+function renderHeroMosaic(){
+  const host = document.getElementById("heroMosaic");
+  if (!host) return;
+
+  const items = CONFIG.homeCollage.slice(0, 5);
+  const classes = ["a","b","c","d","e"];
+
+  host.innerHTML = items.map((it, idx) => `
+    <figure class="tile ${classes[idx] || ""}">
+      <img src="${it.src}" alt="" loading="eager">
+    </figure>
+  `).join("");
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
