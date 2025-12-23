@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="pink">
+<html lang="en" data-theme="white">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,6 +8,7 @@
 </head>
 <body>
   <div class="daisy-drift" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
   <header class="topbar">
     <div class="brand">
@@ -15,109 +16,174 @@
       <span class="title">For You</span>
     </div>
 
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="moments.html">Favorite Moments</a>
-      <a href="travels.html">Our Travels</a>
-      <a href="letter.html">My Letter</a>
-    </nav>
+    <div class="center">
+      <span class="progress" id="progressText">01 / 05</span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="hint" id="sceneHint">Unlock</span>
+    </div>
 
     <div class="controls">
       <button class="btn" id="musicBtn" type="button">Play music</button>
-      <label class="select-label" for="themeSelect">Theme</label>
-      <select id="themeSelect" class="select">
-        <option value="pink" selected>Übermensch Pink</option>
-        <option value="blue">Übermensch Blue</option>
-        <option value="red">Übermensch Red</option>
-        <option value="white">Übermensch White</option>
-      </select>
     </div>
   </header>
 
-  <audio id="bgm" preload="none" loop>
-    <!-- Put your legally obtained audio at assets/music/drama.mp3 -->
+  <!-- Persistent audio (SPA keeps it alive) -->
+  <audio id="bgm" preload="auto" loop>
     <source src="assets/music/drama.mp3" type="audio/mpeg" />
   </audio>
 
+  <!-- Cinematic overlays -->
   <div class="bloom" id="bloom" aria-hidden="true"></div>
+  <div class="shutter" id="shutter" aria-hidden="true"></div>
+  <div class="petals" id="petals" aria-hidden="true"></div>
 
-  <main id="gate">
-    <!-- LOCK VIEW -->
-    <section class="lock" id="lockView">
-      <div class="lock-shell">
-        <div class="lock-top">
-          <p class="eyebrow">A birthday lock</p>
-          <h2 class="lock-title">Today is special.</h2>
-          <p class="lock-sub">Only you can open this. Enter your birthday.</p>
-        </div>
-
-        <div class="lock-body">
-          <div class="lock-panel">
-            <div class="pill">Hint: DD | MM | YYYY</div>
-
-            <div class="pin" style="margin-top:12px;">
-              <input id="dd" inputmode="numeric" placeholder="DD" aria-label="Day" />
-              <span class="sep">/</span>
-              <input id="mm" inputmode="numeric" placeholder="MM" aria-label="Month" />
-              <span class="sep">/</span>
-              <input id="yyyy" inputmode="numeric" placeholder="YYYY" aria-label="Year" />
-            </div>
-
-            <div class="row" style="margin-top:14px;">
-              <button class="btn primary" id="unlockBtn" type="button">Unlock</button>
-              <span class="muted">Soft cinematic romance.</span>
-            </div>
+  <main id="app">
+    <!-- SCENE 01: LOCK -->
+    <section class="scene is-active" id="scene-lock" data-scene="lock" aria-label="Unlock scene">
+      <div class="lock">
+        <div class="lock-shell" id="lockShell">
+          <div class="lock-top">
+            <p class="eyebrow">A birthday lock</p>
+            <h2 class="lock-title">Today is special.</h2>
+            <p class="lock-sub">Only you can open this. Enter your birthday.</p>
           </div>
 
-          <div class="calla-hero" aria-hidden="true"></div>
+          <div class="lock-body">
+            <div class="lock-panel">
+              <div class="pill">Hint: DD | MM | YYYY</div>
+
+              <div class="pin" style="margin-top:12px;">
+                <input id="dd" inputmode="numeric" placeholder="DD" aria-label="Day" />
+                <span class="sep">/</span>
+                <input id="mm" inputmode="numeric" placeholder="MM" aria-label="Month" />
+                <span class="sep">/</span>
+                <input id="yyyy" inputmode="numeric" placeholder="YYYY" aria-label="Year" />
+              </div>
+
+              <div class="row" style="margin-top:14px;">
+                <button class="btn primary" id="unlockBtn" type="button">Unlock</button>
+                <span class="muted">Soft cinematic romance.</span>
+              </div>
+            </div>
+
+            <div class="calla-hero" aria-hidden="true"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- REVEAL VIEW -->
-    <section class="hero" id="revealView" style="display:none;">
-      <div class="hero-bg" aria-hidden="true"></div>
-      <div class="collage" id="collage" aria-hidden="true"></div>
+    <!-- SCENE 02: HOME -->
+    <section class="scene" id="scene-home" data-scene="home" aria-label="Home scene">
+      <section class="hero" id="homeHero">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="collage" id="collage" aria-hidden="true"></div>
 
-      <div class="hero-inner">
-        <div class="card">
-          
-          <h1>Happy Birthday, my love</h1>
-          <p class="sub">
-            i just wanted to give you something that feels like a film you can replay anytime
+        <div class="hero-inner" id="heroInner">
+          <div class="card" id="heroCard">
+            <h1>Happy Birthday, my love</h1>
+            <p class="sub">
+              i just wanted to give you something that feels like a film you can replay anytime
+            </p>
+
+            <div class="stats">
+              <div class="stat">
+                <div class="stat-label">Days together</div>
+                <div class="stat-value" id="daysTogether">0</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Since</div>
+                <div class="stat-value" id="sinceDate">YYYY-MM-DD</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <button class="btn primary" data-next type="button">Continue</button>
+              <button class="btn" data-goto="letter" type="button">Open letter</button>
+            </div>
+          </div>
+
+          <div class="hero-mosaic" id="heroMosaic" aria-label="Birthday photos"></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="paper">
+          <p>
+            happy birthday my love! i ran out of gift ideas so i made full use of my degree hehe.
           </p>
+          <p class="signature">— DT</p>
+        </div>
+      </section>
+    </section>
 
-          <div class="stats">
-            <div class="stat">
-              <div class="stat-label">Days together</div>
-              <div class="stat-value" id="daysTogether">0</div>
-            </div>
-            <div class="stat">
-              <div class="stat-label">Since</div>
-              <div class="stat-value" id="sinceDate">YYYY-MM-DD</div>
-            </div>
+    <!-- SCENE 03: MOMENTS -->
+    <section class="scene" id="scene-moments" data-scene="moments" aria-label="Moments scene">
+      <section class="section">
+        <div class="section-head">
+          <h2>Our moments</h2>
+        </div>
+
+        <div class="film" id="film"></div>
+
+        <div class="row" style="margin-top:14px;">
+          <button class="btn primary" data-next type="button">Next: Our Trips</button>
+          <button class="btn" data-prev type="button">Back</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- SCENE 04: TRAVELS -->
+    <section class="scene" id="scene-travels" data-scene="travels" aria-label="Travels scene">
+      <section class="section">
+        <div class="section-head">
+          <h2>Our travels</h2>
+          <p class="muted">Five trips. Five versions of us.</p>
+        </div>
+
+        <div class="postcards" id="postcards"></div>
+
+        <div class="row" style="margin-top:14px;">
+          <button class="btn primary" data-next type="button">Final: the letter</button>
+          <button class="btn" data-prev type="button">Back</button>
+        </div>
+      </section>
+
+      <footer class="footer">Same suitcase. Different memories.</footer>
+    </section>
+
+    <!-- SCENE 05: LETTER -->
+    <section class="scene" id="scene-letter" data-scene="letter" aria-label="Letter scene">
+      <section class="section">
+        <div class="section-head">
+          <h2>The letter</h2>
+        </div>
+
+        <div class="envelope">
+          <div class="env-top">
+            <p class="env-title">To my love, on your birthday</p>
+            <button class="btn primary" id="openLetter" type="button">Open</button>
           </div>
 
-          <div class="row">
-            <a class="btn primary" href="moments.html">Continue</a>
-            <a class="btn" href="letter.html">Open letter</a>
+          <div class="env-body">
+            <div class="letter" id="letter">
+              <p>
+                Happy 26th birthday to you my love. For the past (almost) five years  of our relationship, you have done so much for me. From believing in me, supporting me, comforting me, crying with me, and most importantly, laughing and loving me. I honestly think there are no words in the world that can express how grateful and blessed i am to have you in my life. You have been nothing but truly a blessing in my life. Let's continue navigating the game of life together for the rest of our lives, I love you.
+              </p>
+              <p>
+                I promise i will do everything in my power to give us the life we always wanted.
+              </p>
+              <p class="signature">— DT</p>
+            </div>
           </div>
         </div>
 
-        <div class="hero-mosaic" id="heroMosaic" aria-label="Birthday photos"></div>
-      </div>
-    </section>
+        <div class="row" style="margin-top:14px;">
+          <button class="btn" data-prev type="button">Back</button>
+          <button class="btn" data-goto="home" type="button">Home</button>
+        </div>
+      </section>
 
-    <section class="section">
-      <div class="section-head">
-        <h2></h2>
-      </div>
-      <div class="paper">
-        <p>
-           happy birthday my love! i ran out of gift ideas so i made full use of my degree hehe.
-        </p>
-        <p class="signature">— DT</p>
-      </div>
+      <footer class="footer">once again, happy birthday to you my love!</footer>
     </section>
   </main>
 

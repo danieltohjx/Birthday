@@ -1,11 +1,7 @@
 const CONFIG = {
-  // Gate: birthday
   birth: { dd: "24", mm: "12", yyyy: "1999" },
-
-  // Optional: your relationship start date for "days together"
   sinceISO: "2021-02-21",
 
-  // Homepage collage (5)
   homeCollage: [
     { src: "assets/photos/home1.jpg", caption: "Happy Birthday" },
     { src: "assets/photos/home2.jpg", caption: "My favorite person" },
@@ -14,7 +10,6 @@ const CONFIG = {
     { src: "assets/photos/home5.jpg", caption: "Forever vibe" }
   ],
 
-  // Moments (10)
   moments: [
     { src: "assets/photos/moment01.jpg", stamp: "Moment 01", line: "The day when you came down to my sergeant graduation." },
     { src: "assets/photos/moment02.jpg", stamp: "Moment 02", line: "Our Van Gogh Museum date." },
@@ -24,26 +19,18 @@ const CONFIG = {
     { src: "assets/photos/moment06.jpg", stamp: "Moment 06", line: "Animal zoo in bkk" },
     { src: "assets/photos/moment07.jpg", stamp: "Moment 07", line: "My first Spago experience with you." },
     { src: "assets/photos/moment08.jpg", stamp: "Moment 08", line: "Our first pottery class." },
-    { src: "assets/photos/moment09.jpg", stamp: "Moment 09", line: "photobooth of me in frog costume."},
-    { src: "assets/photos/moment10.jpg", stamp: "Moment 10", line: "Our first hair salon experience together. "}
+    { src: "assets/photos/moment09.jpg", stamp: "Moment 09", line: "photobooth of me in frog costume." },
+    { src: "assets/photos/moment10.jpg", stamp: "Moment 10", line: "Our first hair salon experience together. " }
   ],
 
-  // Travels (5, each photo = one trip)
   travels: [
-    { src: "assets/photos/trip01.jpg", title: "Trip 01", sub: "Switzerland."},
-    { src: "assets/photos/trip02.jpg", title: "Trip 02", sub: "Seoul."},
-    { src: "assets/photos/trip03.jpg", title: "Trip 03", sub: "Bangkok."},
-    { src: "assets/photos/trip04.jpg", title: "Trip 04", sub: "ITaly."},
-    { src: "assets/photos/trip05.jpg", title: "Trip 05", sub: "Bangkok."}
-  ],
-
-  //first date
-  firstDate: [
-    {src: "assets/photos/firstdate1.jpg", title: "First Date 01", sub: "A place"}
+    { src: "assets/photos/trip01.jpg", title: "Trip 01", sub: "Switzerland." },
+    { src: "assets/photos/trip02.jpg", title: "Trip 02", sub: "Seoul." },
+    { src: "assets/photos/trip03.jpg", title: "Trip 03", sub: "Bangkok." },
+    { src: "assets/photos/trip04.jpg", title: "Trip 04", sub: "ITaly." },
+    { src: "assets/photos/trip05.jpg", title: "Trip 05", sub: "Bangkok." }
   ]
 };
-
-function pad2(n){ return String(n).padStart(2, "0"); }
 
 function daysBetween(start, end){
   const ms = 24 * 60 * 60 * 1000;
@@ -53,25 +40,16 @@ function daysBetween(start, end){
   b.setHours(0,0,0,0);
   return Math.floor((b - a) / ms);
 }
+function rand(min, max){ return Math.random() * (max - min) + min; }
 
-function setTheme(theme){
-  document.documentElement.setAttribute("data-theme", theme);
-  localStorage.setItem("theme", theme);
-}
-
-function initTheme(){
-  const select = document.getElementById("themeSelect");
-  if (!select) return;
-
-  const saved = localStorage.getItem("theme");
-  if (saved){
-    select.value = saved;
-    setTheme(saved);
-  } else {
-    setTheme(select.value || "pink");
+/* ---------------- Music (fade, SPA persistent) ---------------- */
+async function fadeTo(audio, target, ms){
+  const start = audio.volume;
+  const steps = 24;
+  for (let i = 1; i <= steps; i++){
+    audio.volume = start + (target - start) * (i / steps);
+    await new Promise(r => setTimeout(r, ms / steps));
   }
-
-  select.addEventListener("change", (e) => setTheme(e.target.value));
 }
 
 function initMusic(){
@@ -79,48 +57,319 @@ function initMusic(){
   const btn = document.getElementById("musicBtn");
   if (!audio || !btn) return;
 
-  const saved = localStorage.getItem("music");
-  let playing = saved === "on";
+  audio.volume = 0.0;
+  let playing = localStorage.getItem("music") === "on";
 
-  const applyBtn = () => btn.textContent = playing ? "Pause music" : "Play music";
-  applyBtn();
+  const apply = () => btn.textContent = playing ? "Pause music" : "Play music";
+  apply();
 
-  const attemptStart = async () => {
+  const start = async () => {
     try{
+      audio.volume = 0.0;
       await audio.play();
+      await fadeTo(audio, 0.55, 700);
       playing = true;
       localStorage.setItem("music", "on");
-      applyBtn();
+      apply();
     } catch {
       playing = false;
       localStorage.setItem("music", "off");
-      applyBtn();
+      apply();
     }
   };
 
-  if (playing) attemptStart();
-
-  btn.addEventListener("click", async () => {
+  const stop = async () => {
     try{
-      if (!playing){
-        await audio.play();
-        playing = true;
-        localStorage.setItem("music", "on");
-      } else {
-        audio.pause();
-        playing = false;
-        localStorage.setItem("music", "off");
-      }
-      applyBtn();
-    } catch {
+      await fadeTo(audio, 0.0, 520);
+      audio.pause();
+    } finally {
       playing = false;
       localStorage.setItem("music", "off");
-      applyBtn();
-      alert("Playback blocked by browser. Tap again after interacting with the page.");
+      apply();
     }
+  };
+
+  if (playing) start();
+
+  btn.addEventListener("click", async () => {
+    if (!playing) await start();
+    else await stop();
+  });
+
+  window.__startMusicFromGesture = start;
+}
+
+/* ---------------- Cinematic overlays ---------------- */
+function setBloom(){
+  const bloom = document.getElementById("bloom");
+  if (!bloom) return;
+  bloom.classList.remove("on");
+  void bloom.offsetWidth;
+  bloom.classList.add("on");
+}
+
+function setShutter(){
+  const el = document.getElementById("shutter");
+  if (!el) return;
+  el.classList.remove("on");
+  void el.offsetWidth;
+  el.classList.add("on");
+}
+
+function burstPetals(){
+  const host = document.getElementById("petals");
+  if (!host) return;
+
+  host.innerHTML = "";
+  const n = 18;
+  const cx = window.innerWidth * 0.5;
+  const cy = window.innerHeight * 0.45;
+
+  for (let i = 0; i < n; i++){
+    const p = document.createElement("div");
+    p.className = "petal";
+
+    const angle = rand(0, Math.PI * 2);
+    const dist1 = rand(120, 360);
+    const dist0 = rand(0, 40);
+
+    const x0 = cx + Math.cos(angle) * dist0;
+    const y0 = cy + Math.sin(angle) * dist0;
+    const x1 = cx + Math.cos(angle) * dist1;
+    const y1 = cy + Math.sin(angle) * dist1;
+
+    p.style.left = "0px";
+    p.style.top = "0px";
+    p.style.setProperty("--x0", `${x0}px`);
+    p.style.setProperty("--y0", `${y0}px`);
+    p.style.setProperty("--x1", `${x1}px`);
+    p.style.setProperty("--y1", `${y1}px`);
+
+    p.style.animationDelay = `${rand(0, 120)}ms`;
+    p.style.transform = `rotate(${rand(-30,30)}deg)`;
+
+    host.appendChild(p);
+  }
+
+  setTimeout(() => { host.innerHTML = ""; }, 1100);
+}
+
+/* ---------------- SPA routing ---------------- */
+const ORDER = ["lock", "home", "moments", "travels", "letter"];
+const TITLES = {
+  lock: "Unlock",
+  home: "Home",
+  moments: "Favorite Moments",
+  travels: "Our Travels",
+  letter: "Letter"
+};
+
+function setTopbar(scene){
+  const progress = document.getElementById("progressText");
+  const hint = document.getElementById("sceneHint");
+  const idx = Math.max(0, ORDER.indexOf(scene));
+  const step = String(idx + 1).padStart(2, "0");
+  const total = String(ORDER.length).padStart(2, "0");
+  if (progress) progress.textContent = `${step} / ${total}`;
+  if (hint) hint.textContent = TITLES[scene] || "For You";
+}
+
+function showScene(scene){
+  ORDER.forEach((s) => {
+    const el = document.getElementById(`scene-${s}`);
+    if (!el) return;
+    el.classList.remove("is-active", "is-in");
+  });
+
+  const target = document.getElementById(`scene-${scene}`);
+  if (!target) return;
+
+  target.classList.add("is-active");
+  requestAnimationFrame(() => target.classList.add("is-in"));
+  setTopbar(scene);
+}
+
+function currentSceneFromHash(){
+  const raw = (location.hash || "").replace("#", "").trim();
+  if (ORDER.includes(raw)) return raw;
+  return null;
+}
+
+function goto(scene){
+  const unlocked = localStorage.getItem("unlocked") === "yes";
+  if (!unlocked && scene !== "lock") {
+    location.hash = "#lock";
+    showScene("lock");
+    denyJump();
+    return;
+  }
+
+  location.hash = `#${scene}`;
+  showScene(scene);
+
+  if (scene === "home") {
+    initCounters();
+    renderHeroMosaic();
+    spawnHomeCollage();
+    ensureParallax();
+  }
+  if (scene === "moments") renderMoments();
+  if (scene === "travels") renderTravels();
+}
+
+/* Film cut transition for all scene changes */
+function transitionTo(scene){
+  setShutter();
+  setTimeout(() => goto(scene), 160);
+}
+
+function initNavButtons(){
+  document.body.addEventListener("click", (e) => {
+    const t = e.target;
+
+    if (t && t.matches("[data-next]")){
+      const cur = currentSceneFromHash() || (localStorage.getItem("unlocked")==="yes" ? "home" : "lock");
+      const idx = ORDER.indexOf(cur);
+      const next = ORDER[Math.min(idx + 1, ORDER.length - 1)];
+      transitionTo(next);
+    }
+
+    if (t && t.matches("[data-prev]")){
+      const cur = currentSceneFromHash() || (localStorage.getItem("unlocked")==="yes" ? "home" : "lock");
+      const idx = ORDER.indexOf(cur);
+      const prev = ORDER[Math.max(idx - 1, 0)];
+      transitionTo(prev);
+    }
+
+    if (t && t.matches("[data-goto]")){
+      const target = t.getAttribute("data-goto");
+      if (target && ORDER.includes(target)) transitionTo(target);
+    }
+  });
+
+  window.addEventListener("hashchange", () => {
+    const scene = currentSceneFromHash();
+    if (!scene) return;
+    showScene(scene);
   });
 }
 
+/* ---------------- Unlock flow (cinematic sequence) ---------------- */
+function denyJump(){
+  const lockShell = document.getElementById("lockShell");
+  if (!lockShell) return;
+  lockShell.classList.remove("shake");
+  void lockShell.offsetWidth;
+  lockShell.classList.add("shake");
+  setBloom();
+}
+
+function initGate(){
+  const unlocked = localStorage.getItem("unlocked") === "yes";
+  if (unlocked){
+    goto(currentSceneFromHash() || "home");
+    return;
+  }
+
+  showScene("lock");
+  location.hash = "#lock";
+
+  const dd = document.getElementById("dd");
+  const mm = document.getElementById("mm");
+  const yyyy = document.getElementById("yyyy");
+  const unlockBtn = document.getElementById("unlockBtn");
+  if (!dd || !mm || !yyyy || !unlockBtn) return;
+
+  const sanitize = (el, maxLen) => {
+    el.value = el.value.replace(/[^\d]/g, "").slice(0, maxLen);
+  };
+
+  const shakeAll = () => {
+    [dd, mm, yyyy].forEach((x) => {
+      x.classList.remove("shake");
+      void x.offsetWidth;
+      x.classList.add("shake");
+    });
+  };
+
+  const check = async () => {
+    const ok = (dd.value === CONFIG.birth.dd) && (mm.value === CONFIG.birth.mm) && (yyyy.value === CONFIG.birth.yyyy);
+    if (!ok){
+      shakeAll();
+      setBloom();
+      return;
+    }
+
+    // Mark unlocked first (pacing lock)
+    localStorage.setItem("unlocked", "yes");
+
+    // Start music here (user gesture)
+    await window.__startMusicFromGesture?.();
+
+    // Cinematic sequence
+    setBloom();
+    setShutter();
+    burstPetals();
+
+    setTimeout(() => goto("home"), 220);
+  };
+
+  dd.addEventListener("input", () => { sanitize(dd, 2); if (dd.value.length === 2) mm.focus(); });
+  mm.addEventListener("input", () => { sanitize(mm, 2); if (mm.value.length === 2) yyyy.focus(); });
+  yyyy.addEventListener("input", () => sanitize(yyyy, 4));
+  [dd, mm, yyyy].forEach((x) => x.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); }));
+
+  unlockBtn.addEventListener("click", check);
+}
+
+/* ---------------- Parallax micro-motion (Home hero only) ---------------- */
+let parallaxInit = false;
+
+function ensureParallax(){
+  if (parallaxInit) return;
+  const hero = document.getElementById("homeHero");
+  if (!hero) return;
+
+  parallaxInit = true;
+
+  // pointer tilt
+  const setVarsFromPoint = (clientX, clientY) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (clientX - rect.left) / rect.width;   // 0..1
+    const y = (clientY - rect.top) / rect.height;   // 0..1
+
+    // map to subtle pixel drift
+    const px = (x - 0.5) * 22;
+    const py = (y - 0.5) * 18;
+
+    document.documentElement.style.setProperty("--px", `${px}px`);
+    document.documentElement.style.setProperty("--py", `${py}px`);
+  };
+
+  hero.addEventListener("mousemove", (e) => setVarsFromPoint(e.clientX, e.clientY), { passive: true });
+
+  hero.addEventListener("touchmove", (e) => {
+    if (!e.touches || !e.touches[0]) return;
+    setVarsFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+
+  hero.addEventListener("mouseleave", () => {
+    document.documentElement.style.setProperty("--px", `0px`);
+    document.documentElement.style.setProperty("--py", `0px`);
+  });
+
+  // scroll micro parallax (very subtle)
+  const onScroll = () => {
+    const y = window.scrollY || 0;
+    const sy = Math.min(10, y * 0.02);
+    document.documentElement.style.setProperty("--sy", `${sy}px`);
+    document.documentElement.style.setProperty("--sx", `0px`);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
+/* ---------------- Renderers ---------------- */
 function initCounters(){
   const sinceEl = document.getElementById("sinceDate");
   const daysEl = document.getElementById("daysTogether");
@@ -130,69 +379,19 @@ function initCounters(){
   }
 }
 
-function initGate(){
-  const gate = document.getElementById("gate");
-  if (!gate) return;
+function renderHeroMosaic(){
+  const host = document.getElementById("heroMosaic");
+  if (!host) return;
 
-  const unlocked = localStorage.getItem("unlocked") === "yes";
-  const lockView = document.getElementById("lockView");
-  const revealView = document.getElementById("revealView");
+  const items = CONFIG.homeCollage.slice(0, 5);
+  const classes = ["a","b","c","d","e"];
 
-  const bloom = document.getElementById("bloom");
-
-  const showReveal = () => {
-    if (lockView) lockView.style.display = "none";
-    if (revealView) revealView.style.display = "block";
-    requestAnimationFrame(() => {
-      if (bloom) bloom.classList.add("on");
-    });
-    spawnHomeCollage();
-    renderHeroMosaic();
-    spawnHomeCollage();
-
-  };
-
-  if (unlocked){
-    showReveal();
-    return;
-  }
-
-  const dd = document.getElementById("dd");
-  const mm = document.getElementById("mm");
-  const yyyy = document.getElementById("yyyy");
-  const unlockBtn = document.getElementById("unlockBtn");
-
-  const sanitize = (el, maxLen) => {
-    el.value = el.value.replace(/[^\d]/g, "").slice(0, maxLen);
-  };
-
-  const check = () => {
-    const ok = (dd.value === CONFIG.birth.dd) && (mm.value === CONFIG.birth.mm) && (yyyy.value === CONFIG.birth.yyyy);
-    if (ok){
-      localStorage.setItem("unlocked", "yes");
-      showReveal();
-      return;
-    }
-    // shake inputs
-    [dd, mm, yyyy].forEach((x) => {
-      x.classList.remove("shake");
-      void x.offsetWidth;
-      x.classList.add("shake");
-    });
-  };
-
-  dd.addEventListener("input", () => { sanitize(dd, 2); if (dd.value.length === 2) mm.focus(); });
-  mm.addEventListener("input", () => { sanitize(mm, 2); if (mm.value.length === 2) yyyy.focus(); });
-  yyyy.addEventListener("input", () => sanitize(yyyy, 4));
-
-  [dd, mm, yyyy].forEach((x) => x.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") check();
-  }));
-
-  unlockBtn?.addEventListener("click", check);
+  host.innerHTML = items.map((it, idx) => `
+    <figure class="tile ${classes[idx] || ""}">
+      <img src="${it.src}" alt="" loading="eager">
+    </figure>
+  `).join("");
 }
-
-function rand(min, max){ return Math.random() * (max - min) + min; }
 
 function spawnHomeCollage(){
   const collage = document.getElementById("collage");
@@ -202,8 +401,6 @@ function spawnHomeCollage(){
 
   const w = collage.clientWidth;
   const h = collage.clientHeight;
-
-  const safePad = 90;
   const items = CONFIG.homeCollage.slice(0, 5);
 
   let i = 0;
@@ -216,8 +413,8 @@ function spawnHomeCollage(){
     const el = document.createElement("div");
     el.className = "polaroid";
 
-    const x = rand(220, w * 0.62);    // keeps it away from right column
-    const y = rand(170, h - 160);
+    const x = rand(220, w * 0.62);
+    const y = rand(200, h - 180);
     const rot = rand(-10, 10);
 
     el.style.left = `${x}px`;
@@ -228,9 +425,8 @@ function spawnHomeCollage(){
       <img src="${item.src}" alt="" loading="eager">
       <div class="cap">${item.caption || ""}</div>
     `;
-
     collage.appendChild(el);
-  }, 260);
+  }, 240);
 }
 
 function renderMoments(){
@@ -283,27 +479,14 @@ function initLetter(){
     btn.textContent = "Opened";
   });
 }
-function renderHeroMosaic(){
-  const host = document.getElementById("heroMosaic");
-  if (!host) return;
 
-  const items = CONFIG.homeCollage.slice(0, 5);
-  const classes = ["a","b","c","d","e"];
-
-  host.innerHTML = items.map((it, idx) => `
-    <figure class="tile ${classes[idx] || ""}">
-      <img src="${it.src}" alt="" loading="eager">
-    </figure>
-  `).join("");
-}
-
-
+/* ---------------- Boot ---------------- */
 document.addEventListener("DOMContentLoaded", () => {
-  initTheme();
   initMusic();
-  initCounters();
-  initGate();
-  renderMoments();
-  renderTravels();
+  initNavButtons();
   initLetter();
+  initGate();
+
+  const target = currentSceneFromHash();
+  if (target) showScene(target);
 });
