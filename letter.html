@@ -1,76 +1,401 @@
-<!doctype html>
-<html lang="en" data-theme="pink">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Letter</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Letter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #07080b;
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.62);
+      --stroke: rgba(255,255,255,0.12);
+      --glass: rgba(255,255,255,0.06);
+
+      --paper: #f6f6f4;
+      --ink: #1c1c1f;
+
+      --daisy-url: url("assets/svg/daisy.svg");
+      --calla-url: url("assets/svg/calla.svg");
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    body{
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(900px 560px at 20% 25%, rgba(255,255,255,0.08), transparent 60%),
+        radial-gradient(900px 560px at 80% 18%, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(1200px 800px at 50% 120%, rgba(255,255,255,0.05), transparent 58%),
+        var(--bg);
+      overflow: hidden;
+      position: relative;
+      color: var(--text);
+    }
+
+    .daisy-drift{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0.14;
+      background-image: var(--daisy-url);
+      background-repeat: repeat;
+      background-size: 72px 72px;
+      animation: drift 34s linear infinite;
+      filter: blur(0.2px);
+      z-index:0;
+    }
+    @keyframes drift{
+      0% { background-position: 0 0; }
+      100% { background-position: 520px 760px; }
+    }
+
+    .calla-wm{
+      position:absolute;
+      inset:-60px;
+      pointer-events:none;
+      background-image: var(--calla-url);
+      background-repeat:no-repeat;
+      background-position: 86% 55%;
+      background-size: 560px auto;
+      opacity:0.10;
+      filter: blur(0.25px);
+      z-index:0;
+      transform: rotate(-2deg);
+    }
+
+    .grain{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      opacity:0.06;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.10) 0 1px, transparent 1px 4px);
+      mix-blend-mode: overlay;
+      z-index:1;
+    }
+
+    .back{
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 50;
+    }
+    .back a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--stroke);
+      padding: 12px 16px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.40);
+      transition: transform 0.2s ease, background 0.2s ease;
+      font-weight: 700;
+    }
+    .back a:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .wrap{
+      min-height: 100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 80px 20px 40px;
+      position: relative;
+      z-index: 2;
+      text-align:center;
+    }
+
+    .envelope-container{
+      display:flex;
+      flex-direction: column;
+      align-items:center;
+      justify-content:center;
+      gap: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 26px;
+      padding: 30px 26px;
+      box-shadow: 0 26px 70px rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .envelope{
+      font-size: 220px;
+      cursor: pointer;
+      user-select:none;
+      animation: bounce 2s ease-in-out infinite;
+      transition: transform 0.25s ease;
+      line-height: 1;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.45));
+    }
+    .envelope:hover{
+      transform: scale(1.08);
+      animation-play-state: paused;
+    }
+
+    .click-me{
+      font-size: 18px;
+      color: rgba(255,255,255,0.82);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.9;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-18px); }
+      60% { transform: translateY(-10px); }
+    }
+    @keyframes pulse{
+      0%,100%{ opacity: 0.95; transform: translateY(0); }
+      50%{ opacity: 0.65; transform: translateY(-2px); }
+    }
+
+    /* Modal */
+    .letter-modal{
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+    }
+    .letter-modal.show{
+      display:flex;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(6px);
+    }
+
+    .paper{
+      position: relative;
+      z-index: 1001;
+      width: min(720px, 100%);
+      max-height: 82vh;
+      overflow: auto;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 14px;
+      padding: 34px 30px 26px;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+      border: 1px solid rgba(0,0,0,0.12);
+      animation: letterIn 0.45s ease-out;
+    }
+
+    .paper::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      border-radius: 14px;
+      background:
+        radial-gradient(900px 380px at 20% 10%, rgba(0,0,0,0.04), transparent 60%),
+        radial-gradient(900px 380px at 80% 0%, rgba(0,0,0,0.03), transparent 60%);
+      opacity: 1;
+    }
+
+    .paper-head{
+      text-align:center;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(0,0,0,0.10);
+      margin-bottom: 18px;
+    }
+    .paper-head h2{
+      margin:0;
+      font-size: 28px;
+      letter-spacing: 0.02em;
+    }
+
+    .content{
+      position: relative;
+      font-size: 17px;
+      line-height: 1.9;
+    }
+    .content p{
+      margin: 0 0 16px;
+      text-align: justify;
+    }
+    .sign{
+      text-align:right;
+      font-style: italic;
+      font-size: 18px;
+      margin-top: 12px;
+      color: rgba(0,0,0,0.70);
+    }
+
+    .close{
+      margin-top: 18px;
+      display:flex;
+      justify-content:center;
+    }
+    .close button{
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(0,0,0,0.88), rgba(0,0,0,0.72));
+      color: white;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .close button:hover{
+      transform: translateY(-2px);
+      filter: brightness(1.05);
+    }
+         .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 25px;
+            opacity: 0;
+            animation: float 8s ease-in-out infinite;
+            transform: translateY(100vh);
+        }
+
+        .heart:nth-child(1) { left: 3%; animation-delay: 0s; animation-duration: 6s; }
+        .heart:nth-child(2) { left: 8%; animation-delay: 0.5s; animation-duration: 7s; }
+        .heart:nth-child(3) { left: 13%; animation-delay: 1s; animation-duration: 8s; }
+        .heart:nth-child(4) { left: 18%; animation-delay: 1.5s; animation-duration: 5.5s; }
+        .heart:nth-child(5) { left: 23%; animation-delay: 2s; animation-duration: 7.5s; }
+        .heart:nth-child(6) { left: 28%; animation-delay: 2.5s; animation-duration: 6.5s; }
+        .heart:nth-child(7) { left: 33%; animation-delay: 3s; animation-duration: 8.5s; }
+        .heart:nth-child(8) { left: 38%; animation-delay: 3.5s; animation-duration: 5s; }
+        .heart:nth-child(9) { left: 43%; animation-delay: 4s; animation-duration: 7s; }
+        .heart:nth-child(10) { left: 48%; animation-delay: 4.5s; animation-duration: 6s; }
+        .heart:nth-child(11) { left: 53%; animation-delay: 5s; animation-duration: 8s; }
+        .heart:nth-child(12) { left: 58%; animation-delay: 0.3s; animation-duration: 7.2s; }
+        .heart:nth-child(13) { left: 63%; animation-delay: 0.8s; animation-duration: 6.8s; }
+        .heart:nth-child(14) { left: 68%; animation-delay: 1.3s; animation-duration: 5.8s; }
+        .heart:nth-child(15) { left: 73%; animation-delay: 1.8s; animation-duration: 7.8s; }
+        .heart:nth-child(16) { left: 78%; animation-delay: 2.3s; animation-duration: 6.3s; }
+        .heart:nth-child(17) { left: 83%; animation-delay: 2.8s; animation-duration: 8.3s; }
+        .heart:nth-child(18) { left: 88%; animation-delay: 3.3s; animation-duration: 5.3s; }
+        .heart:nth-child(19) { left: 93%; animation-delay: 3.8s; animation-duration: 7.3s; }
+        .heart:nth-child(20) { left: 98%; animation-delay: 4.3s; animation-duration: 6.6s; }
+        .heart:nth-child(21) { left: 5%; animation-delay: 4.8s; animation-duration: 8.6s; }
+        .heart:nth-child(22) { left: 12%; animation-delay: 5.3s; animation-duration: 5.6s; }
+        .heart:nth-child(23) { left: 20%; animation-delay: 5.8s; animation-duration: 7.6s; }
+        .heart:nth-child(24) { left: 30%; animation-delay: 6.3s; animation-duration: 6.9s; }
+        .heart:nth-child(25) { left: 40%; animation-delay: 0.2s; animation-duration: 8.9s; }
+        .heart:nth-child(26) { left: 50%; animation-delay: 0.7s; animation-duration: 5.9s; }
+        .heart:nth-child(27) { left: 60%; animation-delay: 1.2s; animation-duration: 7.9s; }
+        .heart:nth-child(28) { left: 70%; animation-delay: 1.7s; animation-duration: 6.2s; }
+        .heart:nth-child(29) { left: 80%; animation-delay: 2.2s; animation-duration: 8.2s; }
+        .heart:nth-child(30) { left: 90%; animation-delay: 2.7s; animation-duration: 5.2s; }
+
+
+    @keyframes fadeIn{
+      from{ opacity: 0; }
+      to{ opacity: 1; }
+    }
+    @keyframes letterIn{
+      from{ opacity: 0; transform: translateY(-18px) scale(0.96); }
+      to{ opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (max-width: 520px){
+      .envelope{ font-size: 175px; }
+      .paper{ padding: 26px 18px 20px; }
+      .paper-head h2{ font-size: 22px; }
+      .content{ font-size: 16px; }
+    }
+  </style>
 </head>
+
 <body>
   <div class="daisy-drift" aria-hidden="true"></div>
+  <div class="calla-wm" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
-  <header class="topbar">
-    <div class="brand">
-      <span class="mark" aria-hidden="true">✿</span>
-      <span class="title">For You</span>
+  <div class="back">
+    <a href="travels.html">← Back</a>
+  </div>
+
+  <div class="wrap">
+    <div class="envelope-container">
+      <div class="envelope" id="envelope">📩</div>
+      <div class="click-me">Click to open</div>
     </div>
+  </div>
 
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="moments.html">Favorite Moments</a>
-      <a href="travels.html">Our Travels</a>
-      <a href="letter.html">Letter</a>
-    </nav>
+  <div class="letter-modal" id="letterModal" aria-hidden="true">
+    <div class="overlay" id="overlay"></div>
 
-    <div class="controls">
-      <button class="btn" id="musicBtn" type="button">Play music</button>
-      <label class="select-label" for="themeSelect">Theme</label>
-      <select id="themeSelect" class="select">
-        <option value="pink" selected>Übermensch Pink</option>
-        <option value="blue">Übermensch Blue</option>
-        <option value="red">Übermensch Red</option>
-        <option value="white">Übermensch White</option>
-      </select>
+    <div class="paper" role="dialog" aria-modal="true" aria-label="Letter">
+      <div class="paper-head">
+        <h2>To my love, on your birthday</h2>
+      </div>
+
+      <div class="content">
+        <p>
+          Happy 26th birthday to you my love. For the past (almost) five years of our relationship, you have done so much for me. From believing in me, supporting me, comforting me, crying with me, and most importantly, laughing and loving me. I honestly think there are no words in the world that can express how grateful and blessed i am to have you in my life. You have been nothing but truly a blessing in my life. Let's continue navigating the game of life together for the rest of our lives, I love you.
+        </p>
+        <p>
+          I promise i will do everything in my power to give us the life we always wanted.
+        </p>
+        <p class="sign">— DT</p>
+      </div>
+
+      <div class="close">
+        <button id="closeBtn" type="button">Close</button>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <audio id="bgm" preload="none" loop>
-    <source src="assets/music/drama.mp3" type="audio/mpeg" />
-  </audio>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const envelope = document.getElementById('envelope');
+      const modal = document.getElementById('letterModal');
+      const overlay = document.getElementById('overlay');
+      const closeBtn = document.getElementById('closeBtn');
 
-  <main>
-    <section class="section">
-      <div class="section-head">
-        <h2>The letter</h2>
-      </div>
+      function openModal(){
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal(){
+        modal.classList.remove('show');
+        document.body.style.overflow = 'hidden'; // keep overflow hidden since page is designed no-scroll
+      }
 
-      <div class="envelope">
-        <div class="env-top">
-          <p class="env-title">To my love, on your birthday</p>
-          <button class="btn primary" id="openLetter" type="button">Open</button>
-        </div>
-        <div class="env-body">
-          <div class="letter" id="letter">
-            <p>
-              Happy 26th birthday to you my love. For the past (almost) five years  of our relationship, you have done so much for me. From believing in me, supporting me, comforting me, crying with me, and most importantly, laughing and loving me. I honestly think there are no words in the world that can express how grateful and blessed i am to have you in my life. You have been nothing but truly a blessing in my life. Let's continue navigating the game of life together for the rest of our lives, I love you.
-            </p>
-            <p>
-              I promise i will do everything in my power to give us the life we always wanted.
-            </p>
-            <p class="signature">— DT</p>
-          </div>
-        </div>
-      </div>
+      envelope.addEventListener('click', openModal);
+      overlay.addEventListener('click', closeModal);
+      closeBtn.addEventListener('click', closeModal);
 
-      <div class="row" style="margin-top:14px;">
-        <a class="btn" href="travels.html">Back</a>
-        <a class="btn" href="index.html">Home</a>
-      </div>
-    </section>
-
-    <footer class="footer">once again, happy birthday to you my love!</footer>
-  </main>
-
-  <script src="script.js"></script>
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+      });
+    });
+  </script>
 </body>
 </html>

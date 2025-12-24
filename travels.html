@@ -1,61 +1,485 @@
-<!doctype html>
-<html lang="en" data-theme="pink">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Our Travels</title>
-  <link rel="stylesheet" href="styles.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #07080b;
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.62);
+      --stroke: rgba(255,255,255,0.12);
+
+      --glass: rgba(255,255,255,0.06);
+      --glass2: rgba(255,255,255,0.10);
+
+      --daisy-url: url("assets/svg/daisy.svg");
+      --calla-url: url("assets/svg/calla.svg");
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(900px 560px at 20% 25%, rgba(255,255,255,0.08), transparent 60%),
+        radial-gradient(900px 560px at 80% 18%, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(1200px 800px at 50% 120%, rgba(255,255,255,0.05), transparent 58%),
+        var(--bg);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Background layers */
+    .daisy-drift{
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      opacity: 0.12;
+      background-image: var(--daisy-url);
+      background-repeat: repeat;
+      background-size: 72px 72px;
+      animation: drift 34s linear infinite;
+      filter: blur(0.2px);
+      z-index: 0;
+    }
+    @keyframes drift{
+      0% { background-position: 0 0; }
+      100% { background-position: 520px 760px; }
+    }
+
+    .calla-wm{
+      position: fixed;
+      inset: -60px;
+      pointer-events:none;
+      background-image: var(--calla-url);
+      background-repeat:no-repeat;
+      background-position: 86% 55%;
+      background-size: 560px auto;
+      opacity: 0.10;
+      filter: blur(0.25px);
+      z-index: 0;
+      transform: rotate(-2deg);
+    }
+
+    .grain{
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      opacity: 0.06;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.10) 0 1px, transparent 1px 4px);
+      mix-blend-mode: overlay;
+      z-index: 1;
+    }
+
+    /* Back button */
+    .back{
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 50;
+    }
+    .back a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--stroke);
+      padding: 12px 16px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.40);
+      transition: transform 0.2s ease, background 0.2s ease;
+      font-weight: 700;
+    }
+    .back a:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* Page */
+    .wrap{
+      position: relative;
+      z-index: 2;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 88px 18px 56px;
+    }
+
+    .head{
+      display:flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .head h1{
+      font-size: 34px;
+      letter-spacing: 0.01em;
+    }
+    .head p{ color: var(--muted); }
+
+    /* Trips grid */
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .trip{
+      grid-column: span 4;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.50);
+      cursor: pointer;
+      transform: translateY(0);
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      position: relative;
+    }
+    .trip:hover{
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .trip img{
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display:block;
+      filter: contrast(1.06) saturate(1.06);
+      transform: scale(1.02);
+      transition: transform 0.8s ease;
+    }
+    .trip:hover img{ transform: scale(1.10); }
+
+    .trip .meta{
+      padding: 12px 14px 14px;
+      display:flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .trip .title{
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+    }
+    .trip .sub{
+      color: rgba(255,255,255,0.62);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* responsive */
+    @media (max-width: 980px){
+      .trip{ grid-column: span 6; }
+    }
+    @media (max-width: 640px){
+      .trip{ grid-column: span 12; }
+      .trip img{ height: 260px; }
+    }
+
+    /* Modal */
+    .modal{
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 1000;
+    }
+    .modal.show{ display: flex; }
+
+    .overlay{
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(7px);
+    }
+
+    .dialog{
+      position: relative;
+      z-index: 1001;
+      width: min(940px, 100%);
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(10,11,15,0.92);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.65);
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      animation: pop 0.28s ease-out;
+    }
+    @keyframes pop{
+      from{ opacity: 0; transform: translateY(10px) scale(0.98); }
+      to{ opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .dialog .photo{
+      background: rgba(255,255,255,0.05);
+      min-height: 420px;
+      position: relative;
+    }
+    .dialog .photo img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .dialog .side{
+      padding: 18px 18px 16px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dialog h2{
+      font-size: 18px;
+      letter-spacing: 0.02em;
+    }
+    .dialog p{
+      color: rgba(255,255,255,0.70);
+      line-height: 1.8;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .actions{
+      margin-top: auto;
+      display:flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .btn{
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.92);
+      padding: 12px 14px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 760;
+    }
+    .btn:hover{ background: rgba(255,255,255,0.12); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    @media (max-width: 900px){
+      .dialog{ grid-template-columns: 1fr; }
+      .dialog .photo{ min-height: 320px; }
+    }
+
+    /* Floating hearts background (WORKING) */
+    .floating-hearts{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2; /* above bg, below content */
+      opacity: 0.55;
+    }
+    .heart{
+      position: absolute;
+      font-size: 20px;
+      opacity: 0;
+      animation-name: floatUp;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      transform: translateY(110vh);
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35));
+    }
+
+    /* The KEYFRAMES you were missing */
+    @keyframes floatUp{
+      0%   { transform: translateY(110vh) translateX(0) scale(0.9); opacity: 0; }
+      10%  { opacity: 0.85; }
+      50%  { transform: translateY(45vh) translateX(12px) scale(1.05); opacity: 0.75; }
+      90%  { opacity: 0.25; }
+      100% { transform: translateY(-20vh) translateX(-10px) scale(1.0); opacity: 0; }
+    }
+  </style>
 </head>
+
 <body>
   <div class="daisy-drift" aria-hidden="true"></div>
+  <div class="calla-wm" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
-  <header class="topbar">
-    <div class="brand">
-      <span class="mark" aria-hidden="true">✿</span>
-      <span class="title">For You</span>
+  <!-- Hearts layer -->
+  <div class="floating-hearts" aria-hidden="true">
+    <!-- 24 hearts, positioned + randomized via CSS variables in JS below -->
+  </div>
+
+  <div class="back">
+    <a href="moments.html">← Back</a>
+  </div>
+
+  <div class="wrap">
+    <div class="head">
+      <h1>Our travels</h1>
+      <p>Click a trip to open the memory.</p>
     </div>
 
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="moments.html">Favorite Moments</a>
-      <a href="travels.html">Our Travels</a>
-      <a href="letter.html">Letter</a>
-    </nav>
+    <div class="grid" id="grid">
+      <!-- Trip cards. Edit these -->
+      <div class="trip" tabindex="0"
+           data-title="Trip 01 — Switzerland"
+           data-desc="Our first ever trip to europe together, honestly switzerland with you after not seeing each other for 5-6 months was the TRIP we needed. The hiking, the cooking at home to save money, the sceneries was everything to me. This trip showed me that you are my perfect travel partner, and make me love you even more!"
+           data-img="assets/photos/trip01.jpg">
+        <img src="assets/photos/trip01.jpg" alt="Trip 01">
+        <div class="meta">
+          <div class="title">Trip 01</div>
+          <div class="sub">Switzerland</div>
+        </div>
+      </div>
 
-    <div class="controls">
-      <button class="btn" id="musicBtn" type="button">Play music</button>
-      <label class="select-label" for="themeSelect">Theme</label>
-      <select id="themeSelect" class="select">
-        <option value="pink" selected>Übermensch Pink</option>
-        <option value="blue">Übermensch Blue</option>
-        <option value="red">Übermensch Red</option>
-        <option value="white">Übermensch White</option>
-      </select>
+      <div class="trip" tabindex="0"
+           data-title="Trip 02 — Seoul"
+           data-desc="Our very first seoul trip together! Eating mediocre food together but omg the AMOUNT of shopping we did was crazy. You spending over $3000 and me wiping out my bank account in seoul was definitely not in my bucket list but NO REGRETS cause its with you."
+           data-img="assets/photos/trip02.jpg">
+        <img src="assets/photos/trip02.jpg" alt="Trip 02">
+        <div class="meta">
+          <div class="title">Trip 02</div>
+          <div class="sub">Seoul</div>
+        </div>
+      </div>
+
+      <div class="trip" tabindex="0"
+           data-title="Trip 03 — Bangkok"
+           data-desc="Our first bangkok trip together with my bestman, and ronnie and yuna. We didn't do much on this trip but we went to the skybar, dog cafe and also me brought you to cafes HAHHA cause I LOVE THE CAFES. AND THE ONSEN!!!"
+           data-img="assets/photos/trip03.jpg">
+        <img src="assets/photos/trip03.jpg" alt="Trip 03">
+        <div class="meta">
+          <div class="title">Trip 03</div>
+          <div class="sub">Bangkok</div>
+        </div>
+      </div>
+
+      <div class="trip" tabindex="0"
+           data-title="Trip 04 — Italy"
+           data-desc="Also one of the best trips of my life, walking around the towns of italy? amazing. The shitty accomms that we had cause everywhere was so expensive only made us rely on each other much more, the improomptu meal plans that led us to realize that italians eat dinner so late at night and we have to go to local restaurants to actually have deccent food."
+           data-img="assets/photos/trip04.jpg">
+        <img src="assets/photos/trip04.jpg" alt="Trip 04">
+        <div class="meta">
+          <div class="title">Trip 04</div>
+          <div class="sub">Italy</div>
+        </div>
+      </div>
+
+      <div class="trip" tabindex="0"
+           data-title="Trip 05 — Malaysia"
+           data-desc="We went to JB so many times i decided to choose this photo cause its the most memorable for us, cause TUFTINGGGGG!"
+           data-img="assets/photos/trip05.jpg">
+        <img src="assets/photos/trip05.jpg" alt="Trip 05">
+        <div class="meta">
+          <div class="title">Trip 05</div>
+          <div class="sub">Bangkok</div>
+        </div>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <audio id="bgm" preload="none" loop>
-    <source src="assets/music/drama.mp3" type="audio/mpeg" />
-  </audio>
+  <!-- Modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="overlay" id="overlay"></div>
 
-  <main>
-    <section class="section">
-      <div class="section-head">
-        <h2>Our travels</h2>
-        <p class="muted">Five trips. Five versions of us.</p>
+    <div class="dialog" role="dialog" aria-modal="true" aria-label="Trip details">
+      <div class="photo">
+        <img id="modalImg" src="" alt="Trip photo">
       </div>
-
-      <div class="postcards" id="postcards"></div>
-
-      <div class="row" style="margin-top:14px;">
-        <a class="btn primary" href="letter.html">Final: the letter</a>
-        <a class="btn" href="moments.html">Back</a>
+      <div class="side">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDesc"></p>
+        <div class="actions">
+          <button class="btn" id="closeBtn" type="button">Close</button>
+          <a class="btn primary" href="letter.html">Next</a>
+        </div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <footer class="footer">Same suitcase. Different memories.</footer>
-  </main>
+  <script>
+    // ---------- Modal logic ----------
+    const modal = document.getElementById("modal");
+    const overlay = document.getElementById("overlay");
+    const closeBtn = document.getElementById("closeBtn");
+    const modalImg = document.getElementById("modalImg");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
 
-  <script src="script.js"></script>
+    function openModal(card){
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+
+      modalTitle.textContent = card.dataset.title || "";
+      const sub = card.dataset.sub ? `\n\n${card.dataset.sub}` : "";
+      modalDesc.textContent = (card.dataset.desc || "") + sub;
+      modalImg.src = card.dataset.img || card.querySelector("img")?.src || "";
+    }
+
+    function closeModal(){
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      modalImg.src = "";
+    }
+
+    document.querySelectorAll(".trip").forEach(card => {
+      card.addEventListener("click", () => openModal(card));
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") openModal(card);
+      });
+    });
+
+    overlay.addEventListener("click", closeModal);
+    closeBtn.addEventListener("click", closeModal);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+    });
+
+    // ---------- Floating hearts (generate in JS so no manual 30+ spans) ----------
+    const heartsHost = document.querySelector(".floating-hearts");
+    const heartCount = 26;
+
+    for (let i = 0; i < heartCount; i++){
+      const s = document.createElement("span");
+      s.className = "heart";
+      s.textContent = "♥";
+
+      const left = Math.random() * 100;            // %
+      const delay = Math.random() * 6;             // s
+      const duration = 6 + Math.random() * 5;      // 6-11s
+      const size = 14 + Math.random() * 14;        // px
+      const hue = 330 + Math.random() * 30;        // pink range
+
+      s.style.left = left + "%";
+      s.style.animationDelay = delay + "s";
+      s.style.animationDuration = duration + "s";
+      s.style.fontSize = size + "px";
+      s.style.color = `hsla(${hue}, 75%, 65%, 0.75)`;
+
+      heartsHost.appendChild(s);
+    }
+  </script>
 </body>
 </html>

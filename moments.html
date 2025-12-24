@@ -1,59 +1,286 @@
-<!doctype html>
-<html lang="en" data-theme="pink">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Favorite Moments</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #07080b;
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.62);
+      --stroke: rgba(255,255,255,0.12);
+      --glass: rgba(255,255,255,0.06);
+
+      --daisy-url: url("assets/svg/daisy.svg");
+      --calla-url: url("assets/svg/calla.svg");
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    body{
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(900px 560px at 20% 25%, rgba(255,255,255,0.08), transparent 60%),
+        radial-gradient(900px 560px at 80% 18%, rgba(255,255,255,0.06), transparent 60%),
+        radial-gradient(1200px 800px at 50% 120%, rgba(255,255,255,0.05), transparent 58%),
+        var(--bg);
+      overflow: hidden;
+      position: relative;
+      color: var(--text);
+    }
+
+    /* Daisy drift */
+    .daisy-drift{
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.14;
+      background-image: var(--daisy-url);
+      background-repeat: repeat;
+      background-size: 72px 72px;
+      animation: drift 34s linear infinite;
+      filter: blur(0.2px);
+      z-index: 0;
+    }
+    @keyframes drift{
+      0% { background-position: 0 0; }
+      100% { background-position: 520px 760px; }
+    }
+
+    /* Calla watermark */
+    .calla-wm{
+      position: absolute;
+      inset: -60px;
+      pointer-events: none;
+      background-image: var(--calla-url);
+      background-repeat: no-repeat;
+      background-position: 85% 55%;
+      background-size: 560px auto;
+      opacity: 0.10;
+      filter: blur(0.25px);
+      z-index: 0;
+      transform: rotate(-2deg);
+    }
+
+    /* Grain */
+    .grain{
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      background-image:
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.10) 0 1px, transparent 1px 4px);
+      mix-blend-mode: overlay;
+      z-index: 1;
+    }
+
+    .back{
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 50;
+    }
+    .back a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--stroke);
+      padding: 12px 16px;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.40);
+      transition: transform 0.2s ease, background 0.2s ease;
+      font-weight: 700;
+    }
+    .back a:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+    }
+
+    /* Canvas to hold floating images */
+    .image-container{
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .floating-image{
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 18px;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(0.86);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      filter: contrast(1.05) saturate(1.05);
+    }
+    .floating-image.show{
+      opacity: 1;
+      transform: scale(1);
+    }
+    .floating-image.hide{
+      opacity: 0;
+      transform: scale(0.88);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+      50%      { transform: translateY(-18px) rotate(1.6deg) scale(1.01); }
+    }
+    .floating-image.animate{
+      animation: float 3.2s ease-in-out infinite;
+    }
+
+    @media (max-width: 768px){
+      .floating-image{
+        width: 165px;
+        height: 165px;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <div class="daisy-drift" aria-hidden="true"></div>
+  <div class="calla-wm" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
-  <header class="topbar">
-    <div class="brand">
-      <span class="mark" aria-hidden="true">✿</span>
-      <span class="title">For You</span>
-    </div>
+  <div class="back">
+    <a href="index.html">← Back</a>
+  </div>
 
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="moments.html">Favorite Moments</a>
-      <a href="travels.html">Our Travels</a>
-      <a href="letter.html">Letter</a>
-    </nav>
+  <div class="image-container" id="imageContainer"></div>
 
-    <div class="controls">
-      <button class="btn" id="musicBtn" type="button">Play music</button>
-      <label class="select-label" for="themeSelect">Theme</label>
-      <select id="themeSelect" class="select">
-        <option value="pink" selected>Übermensch Pink</option>
-        <option value="blue">Übermensch Blue</option>
-        <option value="red">Übermensch Red</option>
-        <option value="white">Übermensch White</option>
-      </select>
-    </div>
-  </header>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const imageContainer = document.getElementById('imageContainer');
 
-  <audio id="bgm" preload="none" loop>
-    <source src="assets/music/drama.mp3" type="audio/mpeg" />
-  </audio>
+      // IMPORTANT:
+      // Set your folder + filenames here.
+      // Example if your photos live in: assets/photos/
+      const imageFolder = 'assets/photos/';
 
-  <main>
-    <section class="section">
-      <div class="section-head">
-        <h2>Our moments</h2>
-      </div>
+      // Replace these with YOUR real moment image filenames
+      const imageFiles = [
+        'moment01.jpg',
+        'moment02.jpg',
+        'moment03.jpg',
+        'moment04.jpg',
+        'moment05.jpg',
+        'moment06.jpg',
+        'moment07.jpg',
+        'moment08.jpg',
+        'moment09.jpg',
+        'moment10.jpg',
+        'moment11.jpg',
+        'moment12.jpg',
+        'moment13.jpg',
+        'moment14.jpg',
+        'moment15.jpg',
+        'moment16.jpg',
+        'moment17.jpg',
+        'moment18.jpg',
+        'moment19.jpg',
+        'moment20.jpg',
+        'moment21.jpg',
+        'moment22.jpg',
+        'moment23.jpg',
+        'moment24.jpg',
+        'moment25.jpg',
+        'moment26.jpg',
+        'moment27.jpg',
+        'moment28.jpg',
+        'moment29.jpg',
+        'moment30.jpg',
+        'moment31.jpg',
+        'moment32.jpg',
+        'moment33.jpg',
+        'moment34.jpg',
+        'moment35.jpg',
+        'moment36.jpg',
+        'moment37.jpg',
+        'moment38.jpg',
+      ];
 
-      <div class="film" id="film"></div>
+      let activeImages = [];
+      const maxImages = 10;
 
-      <div class="row" style="margin-top:14px;">
-        <a class="btn primary" href="travels.html">Next: Our Trips</a>
-        <a class="btn" href="index.html">Back</a>
-      </div>
-    </section>
+      function rand(min, max){ return Math.random() * (max - min) + min; }
 
-  </main>
+      function createFloatingImage(){
+        const img = document.createElement('img');
+        const pick = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+        img.src = imageFolder + pick;
+        img.className = 'floating-image';
 
-  <script src="script.js"></script>
+        // Random position (keep on-screen)
+        const size = window.innerWidth <= 768 ? 165 : 220;
+        const pad = 18;
+        const x = rand(pad, Math.max(pad, window.innerWidth - size - pad));
+        const y = rand(pad, Math.max(pad, window.innerHeight - size - pad));
+        img.style.left = x + 'px';
+        img.style.top = y + 'px';
+
+        // Slight rotation variety
+        img.style.transform = `scale(0.86) rotate(${rand(-5, 5)}deg)`;
+
+        img.onerror = function(){
+          img.remove();
+          activeImages = activeImages.filter(i => i !== img);
+          setTimeout(() => createFloatingImage(), 120);
+        };
+
+        img.onload = function(){
+          setTimeout(() => {
+            img.classList.add('show');
+            img.classList.add('animate');
+          }, 60);
+
+          // visible 3.2s to 5.2s
+          setTimeout(() => {
+            img.classList.remove('show');
+            img.classList.add('hide');
+
+            setTimeout(() => {
+              img.remove();
+              activeImages = activeImages.filter(i => i !== img);
+            }, 520);
+          }, 3200 + Math.random() * 2000);
+        };
+
+        imageContainer.appendChild(img);
+        activeImages.push(img);
+      }
+
+      function stream(){
+        createFloatingImage();
+        setTimeout(stream, 820 + Math.random() * 420);
+      }
+
+      // Start multiple streams for density
+      for (let i = 0; i < 5; i++){
+        setTimeout(stream, i * 120);
+      }
+
+      // keep it alive
+      setInterval(() => {
+        if (activeImages.length < maxImages) createFloatingImage();
+      }, 900);
+    });
+  </script>
 </body>
 </html>
